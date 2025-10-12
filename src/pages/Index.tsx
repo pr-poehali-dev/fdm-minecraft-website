@@ -132,6 +132,36 @@ const Index = () => {
 
   const [visitorCount] = useState(Math.floor(Math.random() * 500) + 5000);
 
+  const serverNews = [
+    {
+      date: "10 октября 2025",
+      title: "Обновление 2.0: Новые режимы!",
+      description: "Добавлены новые мини-игры и улучшен режим выживания. Ждём всех на сервере!",
+      icon: "Sparkles",
+    },
+    {
+      date: "5 октября 2025",
+      title: "Конкурс на лучшую постройку",
+      description: "Главный приз - 10000 игровой валюты и эксклюзивный набор!",
+      icon: "Trophy",
+    },
+    {
+      date: "1 октября 2025",
+      title: "Открытие магазина донатов",
+      description: "Теперь вы можете приобрести эксклюзивные предметы в нашем магазине",
+      icon: "ShoppingCart",
+    },
+  ];
+
+  const galleryImages = [
+    "https://sun9-47.userapi.com/impg/c855128/v855128302/20e5d4/DtKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+    "https://sun9-55.userapi.com/impg/c855128/v855128302/20e5dd/9fKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+    "https://sun9-18.userapi.com/impg/c855128/v855128302/20e5e6/KfKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+    "https://sun9-74.userapi.com/impg/c855128/v855128302/20e5ef/VfKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+    "https://sun9-27.userapi.com/impg/c855128/v855128302/20e5f8/gfKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+    "https://sun9-59.userapi.com/impg/c855128/v855128302/20e601/rfKjHaU4-yE.jpg?size=1280x720&quality=95&sign=5e1f5c1e5e1f5c1e5e1f5c1e5e1f5c1e&type=album",
+  ];
+
   return (
     <div className="min-h-screen bg-[#D2691E] text-white">
       <div className="container mx-auto px-4 py-8 space-y-12">
@@ -328,6 +358,95 @@ const Index = () => {
               </a>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section 
+          ref={(el) => (sectionRefs.current['news'] = el)}
+          id="news"
+          className={`space-y-6 transition-all duration-700 ${
+            visibleSections.has('news') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
+          <h2 className="text-2xl md:text-3xl text-center text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
+            Последние новости
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {serverNews.map((news, idx) => (
+              <div
+                key={news.title}
+                className={`transition-all duration-700 ${
+                  visibleSections.has('news') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ animationDelay: `${idx * 150}ms` }}
+              >
+                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 h-full">
+                  <div className="flex items-center justify-center mb-4">
+                    <Icon name={news.icon as any} size={40} className="text-[#10B981]" />
+                  </div>
+                  <p className="text-[0.6rem] md:text-xs text-[#10B981] mb-2 text-center">
+                    {news.date}
+                  </p>
+                  <h3 className="text-xs md:text-sm mb-3 text-white font-bold text-center">
+                    {news.title}
+                  </h3>
+                  <p className="text-[0.6rem] md:text-xs text-white/80 text-center">
+                    {news.description}
+                  </p>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section 
+          ref={(el) => (sectionRefs.current['gallery'] = el)}
+          id="gallery"
+          className={`space-y-6 transition-all duration-700 ${
+            visibleSections.has('gallery') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
+          <h2 className="text-2xl md:text-3xl text-center text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
+            Галерея скриншотов
+          </h2>
+          <p className="text-center text-sm md:text-base text-white/80">
+            Из нашего сообщества VK
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {galleryImages.map((image, idx) => (
+              <div
+                key={idx}
+                className={`transition-all duration-700 ${
+                  visibleSections.has('gallery') ? 'animate-fade-in' : 'opacity-0 scale-95'
+                }`}
+                style={{ animationDelay: `${idx * 100}ms` }}
+              >
+                <a
+                  href="https://vk.ru/fd_minec"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="border-4 border-[#8B4513] overflow-hidden shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 bg-[#D2691E] aspect-video group cursor-pointer">
+                    <div className="w-full h-full bg-[#8B4513] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Icon name="Image" size={48} className="text-[#10B981] opacity-50" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <Button
+              asChild
+              className="bg-[#10B981] hover:bg-[#8B4513] text-white border-4 border-[#000] shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)] hover:translate-x-1 hover:translate-y-1 px-8 py-4 text-xs md:text-sm transition-all duration-200"
+            >
+              <a
+                href="https://vk.ru/fd_minec"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Больше фото в VK
+              </a>
+            </Button>
           </div>
         </section>
 
