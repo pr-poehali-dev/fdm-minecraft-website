@@ -421,7 +421,11 @@ const Index = () => {
                 <Card className={`bg-gradient-to-br ${clan.color} border-0 p-6 h-48 cursor-pointer transition-all duration-300 hover:h-auto shadow-lg overflow-hidden`}>
                   <div className="flex flex-col items-center text-center space-y-3 text-white">
                     <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
-                      <Icon name={clan.icon as any} size={32} />
+                      {clan.name === "Orthodox" ? (
+                        <div className="text-4xl">✝️</div>
+                      ) : (
+                        <Icon name={clan.icon as any} size={32} />
+                      )}
                     </div>
                     <h3 className="text-base font-bold">{clan.name}</h3>
                   </div>
