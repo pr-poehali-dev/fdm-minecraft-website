@@ -124,7 +124,7 @@ const Index = () => {
   const clans = [
     {
       name: "Красный Рассвет",
-      description: "Старейший и крупнейший клан сервера. Основан _GACHI_MAN, прошёл через множество войн и возрождений",
+      description: "Старейший и крупнейший клан сервера. Основан _GACHI_MAN с первыми участниками Waseee и PRO100DIMA. Пережил множество войн с Terrible Dream, ОЗЗ и Анархистами. После ухода основателя клан возродил lopalopa, создав легендарные базы Союз и Восход. Сейчас главой является Hemister_Hunter",
       icon: "Sunrise",
       color: "from-red-600 to-orange-500",
       members: 127,
