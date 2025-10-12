@@ -113,6 +113,12 @@ const Index = () => {
       icon: "MessageSquare",
       color: "bg-gradient-to-br from-indigo-600 to-purple-600"
     },
+    {
+      name: "Nyx",
+      url: "https://nyx-app.ru/#/dashboard/accept-invite/oDTpeutumixj",
+      icon: "Gamepad2",
+      color: "bg-gradient-to-br from-purple-700 to-pink-600"
+    },
   ];
 
   const clans = [
@@ -322,7 +328,7 @@ const Index = () => {
 
         <section className="space-y-6">
           <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Присоединяйся</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {socialLinks.map((link) => (
               <a
                 key={link.name}
