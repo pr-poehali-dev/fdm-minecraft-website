@@ -160,6 +160,24 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
       
+      <nav className="relative z-20 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            Freedom
+          </h1>
+          <a 
+            href="https://fdm.trademc.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all">
+              <Icon name="ShoppingCart" size={18} className="mr-2" />
+              Магазин
+            </Button>
+          </a>
+        </div>
+      </nav>
+
       <div className="container mx-auto px-4 py-12 space-y-16 relative z-10">
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
