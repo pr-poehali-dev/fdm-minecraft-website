@@ -235,18 +235,9 @@ const Index = () => {
               Онлайн
             </h3>
             <div className="text-center space-y-3">
-              <a 
-                href="https://minestatus.net/server/go.fdm.su" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block mx-auto"
-              >
-                <img 
-                  src="https://static.minestatus.net/b/go.fdm.su" 
-                  alt="Minestatus" 
-                  className="mx-auto rounded-lg"
-                />
-              </a>
+              <p className="text-sm text-muted-foreground">
+                Игроков на go.fdm.su: <b className="text-primary text-2xl"><span data-playercounter-ip="go.fdm.su">0</span></b>
+              </p>
             </div>
           </Card>
 
