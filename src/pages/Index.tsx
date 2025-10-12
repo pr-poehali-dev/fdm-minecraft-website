@@ -238,6 +238,13 @@ const Index = () => {
               <p className="text-sm text-muted-foreground">
                 Игроков на go.fdm.su: <b className="text-primary text-2xl"><span data-playercounter-ip="go.fdm.su">0</span></b>
               </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-2 text-xs text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2 mx-auto"
+              >
+                <Icon name="RefreshCw" size={14} />
+                Обновить
+              </button>
             </div>
           </Card>
 
