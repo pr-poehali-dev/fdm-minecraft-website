@@ -123,9 +123,9 @@ const Index = () => {
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://cdn.poehali.dev/projects/d9e40634-1ac4-4819-ae4f-92f69037068d/files/94bf905e-bf0b-4619-80c3-a38d47aac5dd.jpg" 
-              alt="Minecraft Block" 
-              className="w-24 h-24 md:w-32 md:h-32 rounded-lg"
+              src="https://cdn.poehali.dev/projects/d9e40634-1ac4-4819-ae4f-92f69037068d/files/059ad878-82ee-417f-bb21-13a2f8bdeb8c.jpg" 
+              alt="Minecraft Grass Block" 
+              className="w-24 h-24 md:w-32 md:h-32"
               style={{animation: "float 3s ease-in-out infinite", imageRendering: "pixelated"}}
             />
           </div>
