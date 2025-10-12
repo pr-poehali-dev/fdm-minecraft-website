@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
@@ -188,16 +190,26 @@ const Index = () => {
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Freedom
           </h1>
-          <a 
-            href="https://fdm.trademc.org/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all">
-              <Icon name="ShoppingCart" size={18} className="mr-2" />
-              Магазин
+          <div className="flex gap-4">
+            <Button 
+              variant="ghost"
+              onClick={() => navigate("/gallery")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <Icon name="Image" size={18} className="mr-2" />
+              Галерея
             </Button>
-          </a>
+            <a 
+              href="https://fdm.trademc.org/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all">
+                <Icon name="ShoppingCart" size={18} className="mr-2" />
+                Магазин
+              </Button>
+            </a>
+          </div>
         </div>
       </nav>
 
