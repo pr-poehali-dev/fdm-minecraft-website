@@ -3,6 +3,19 @@ import os
 from typing import Dict, Any, Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import jwt
+
+def verify_token(headers: Dict[str, str]) -> Optional[Dict[str, Any]]:
+    token = headers.get('x-auth-token') or headers.get('X-Auth-Token')
+    if not token:
+        return None
+    
+    try:
+        jwt_secret = os.environ.get('JWT_SECRET', 'default-secret-change-in-production')
+        payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
+        return payload
+    except:
+        return None
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
@@ -18,7 +31,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'headers': {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, X-User-Id',
+                'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token',
                 'Access-Control-Max-Age': '86400'
             },
             'body': ''
@@ -60,6 +73,16 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             }
         
         if method == 'POST':
+            user = verify_token(event.get('headers', {}))
+            if not user:
+                cursor.close()
+                conn.close()
+                return {
+                    'statusCode': 401,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'error': 'Unauthorized'})
+                }
+            
             body_data = json.loads(event.get('body', '{}'))
             title = body_data.get('title', '')
             description = body_data.get('description', '')
@@ -99,6 +122,16 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             }
         
         if method == 'DELETE':
+            user = verify_token(event.get('headers', {}))
+            if not user:
+                cursor.close()
+                conn.close()
+                return {
+                    'statusCode': 401,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'error': 'Unauthorized'})
+                }
+            
             params = event.get('queryStringParameters', {})
             photo_id = params.get('id')
             

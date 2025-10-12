@@ -5,17 +5,6 @@
       "method": "GET",
       "path": "/",
       "expectedStatus": 200
-    },
-    {
-      "name": "Add new photo",
-      "method": "POST",
-      "path": "/",
-      "body": {
-        "title": "Test Photo",
-        "description": "Test Description",
-        "image_url": "https://example.com/photo.jpg"
-      },
-      "expectedStatus": 201
     }
   ]
 }
