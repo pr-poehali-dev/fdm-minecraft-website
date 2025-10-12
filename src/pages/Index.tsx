@@ -70,9 +70,9 @@ const Index = () => {
   };
 
   const features = [
-    { icon: "Zap", title: "Emotecrafts", desc: "Анимации" },
+    { icon: "Flame", title: "Гриферство", desc: "Полная свобода" },
     { icon: "Mic", title: "Voice Chat", desc: "Голосовой чат" },
-    { icon: "Flame", title: "PvP", desc: "Анархия" },
+    { icon: "Zap", title: "Emotecrafts", desc: "Анимации" },
     { icon: "Package", title: "Кастом", desc: "Уникальные предметы" },
   ];
 
