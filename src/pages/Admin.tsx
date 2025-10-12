@@ -156,6 +156,10 @@ export default function Admin() {
               <Icon name="User" size={16} className="inline mr-1" />
               {authUser.username}
             </span>
+            <Button variant="ghost" onClick={() => navigate("/admin/security")}>
+              <Icon name="Shield" size={18} className="mr-2" />
+              Безопасность
+            </Button>
             <Button variant="ghost" onClick={() => navigate("/")}>
               <Icon name="Home" size={18} className="mr-2" />
               На сайт

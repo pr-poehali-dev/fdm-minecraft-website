@@ -1,0 +1,10 @@
+{
+  "tests": [
+    {
+      "name": "Get login history without auth",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    }
+  ]
+}
