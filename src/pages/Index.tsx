@@ -221,6 +221,75 @@ const Index = () => {
             </p>
           </div>
 
+          <Card className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm border-2 border-primary/40 p-8 max-w-4xl mx-auto shadow-2xl hover:shadow-primary/30 transition-all">
+            <div className="space-y-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Народ, все чухня. Играйте на лучшем Minecraft-сервере мира (но это не точно) Freedom!
+              </h2>
+              
+              <p className="text-base md:text-lg text-center text-muted-foreground">
+                Это самый амбициозный Minecraft-проект за все время (админа), который затрагивает буквально каждый аспект игры (и вашей жизни):
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-4 text-left">
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="MapPin" size={24} className="text-primary flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    Местные земли на столько изуродованы, что кажется на сервере есть новые биомы, данжи и структуры
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="Smile" size={24} className="text-accent flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    Поддержка кастомных анимаций (Emotecrafts)
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="Mic" size={24} className="text-blue-500 flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    Поддержка голосового чата прямо в игре (Simple Voice Chat), чтобы твой кореш смог издавать для тебя незабываемые звуки
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="Zap" size={24} className="text-orange-500 flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    У местных игроков столько TNT, кристаллов и якорей, что твоя RTX будет создавать динамическое освещение огня прямо в реальности
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="Sparkles" size={24} className="text-yellow-500 flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    Всякие прикалюхи, типа пишешь сообщение, а вокруг тебя такие огоньки: ВЖУХ
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
+                  <Icon name="Bug" size={24} className="text-red-500 flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    Новые монстры, баги и боссы
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-lg border-2 border-red-500/30">
+                <div className="flex gap-3 items-start">
+                  <Icon name="AlertTriangle" size={24} className="text-red-500 flex-shrink-0 mt-1" />
+                  <p className="text-sm text-foreground">
+                    <span className="font-bold text-red-500">Нелегальные предметы</span>, инструменты, ресурсы, шмотки и многое-многое другое за что вас сможет забанить администрация!
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xl md:text-2xl font-bold text-center bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                Короче, ваша жизнь никогда не будет прежней)
+              </p>
+            </div>
+          </Card>
+
           <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 max-w-2xl mx-auto shadow-lg hover:shadow-primary/20 transition-all">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-center md:text-left space-y-2">
