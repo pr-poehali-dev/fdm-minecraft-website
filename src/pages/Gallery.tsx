@@ -1,45 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+
+interface Photo {
+  id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  created_at: string;
+}
+
+const API_URL = "https://functions.poehali.dev/96ce21ed-e22a-41d3-a430-bb779560e271";
 
 export default function Gallery() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const images = [
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "Главная база",
-      description: "Эпический вид на нашу базу"
-    },
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "Битва кланов",
-      description: "Легендарная схватка"
-    },
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "Постройки",
-      description: "Невероятная архитектура"
-    },
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "Ивенты",
-      description: "События на сервере"
-    },
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "Приключения",
-      description: "Путешествия по миру"
-    },
-    {
-      url: "https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856",
-      title: "PvP",
-      description: "Сражения игроков"
+  useEffect(() => {
+    fetchPhotos();
+  }, []);
+
+  const fetchPhotos = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setPhotos(data.photos || []);
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить фотографии",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
@@ -83,29 +84,40 @@ export default function Gallery() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.map((image, index) => (
-            <Card 
-              key={index}
-              className="group overflow-hidden bg-card/80 backdrop-blur-sm border-2 border-primary/30 hover:border-primary/60 transition-all cursor-pointer shadow-lg hover:shadow-primary/20"
-              onClick={() => setSelectedImage(image.url)}
-            >
-              <div className="relative overflow-hidden">
-                <img 
-                  src={image.url} 
-                  alt={image.title}
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <div className="text-white">
-                    <h3 className="font-bold text-lg">{image.title}</h3>
-                    <p className="text-sm text-white/80">{image.description}</p>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : photos.length === 0 ? (
+          <div className="text-center py-20">
+            <Icon name="ImageOff" size={64} className="mx-auto mb-4 text-muted-foreground" />
+            <p className="text-muted-foreground text-lg">Пока нет фотографий в галерее</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {photos.map((photo) => (
+              <Card 
+                key={photo.id}
+                className="group overflow-hidden bg-card/80 backdrop-blur-sm border-2 border-primary/30 hover:border-primary/60 transition-all cursor-pointer shadow-lg hover:shadow-primary/20"
+                onClick={() => setSelectedImage(photo.image_url)}
+              >
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={photo.image_url} 
+                    alt={photo.title}
+                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <div className="text-white">
+                      <h3 className="font-bold text-lg">{photo.title}</h3>
+                      <p className="text-sm text-white/80">{photo.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
 
       {selectedImage && (
