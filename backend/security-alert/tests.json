@@ -1,0 +1,10 @@
+{
+  "tests": [
+    {
+      "name": "Check security alerts",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

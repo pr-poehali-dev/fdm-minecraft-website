@@ -12,12 +12,15 @@ import bcrypt
 from datetime import datetime, timedelta
 from typing import Dict, Any
 import psycopg2
+import urllib.request
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 JWT_SECRET = os.environ.get('JWT_SECRET', 'default-secret-change-in-production')
+SECURITY_ALERT_URL = os.environ.get('SECURITY_ALERT_URL', 'https://functions.poehali.dev/ALERT_FUNCTION_ID')
 
 MAX_ATTEMPTS = 5
 LOCKOUT_MINUTES = 15
+ALERT_THRESHOLD = 3
 
 def get_client_ip(event: Dict[str, Any]) -> str:
     request_context = event.get('requestContext', {})
@@ -50,6 +53,23 @@ def log_attempt(conn, ip_address: str, username: str, success: bool):
     )
     conn.commit()
     cur.close()
+
+def trigger_security_check(ip_address: str):
+    try:
+        cur = conn.cursor()
+        one_minute_ago = datetime.utcnow() - timedelta(minutes=1)
+        cur.execute(
+            "SELECT COUNT(*) FROM login_attempts WHERE ip_address = %s AND success = FALSE AND attempt_time > %s",
+            (ip_address, one_minute_ago)
+        )
+        failed_count = cur.fetchone()[0]
+        cur.close()
+        
+        if failed_count >= ALERT_THRESHOLD:
+            req = urllib.request.Request(SECURITY_ALERT_URL, method='POST')
+            urllib.request.urlopen(req, timeout=5)
+    except:
+        pass
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     method: str = event.get('httpMethod', 'POST')
@@ -107,6 +127,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         if not user:
             log_attempt(conn, ip_address, username, False)
+            trigger_security_check(ip_address)
             cur.close()
             conn.close()
             return {
@@ -123,6 +144,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         if not bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8')):
             log_attempt(conn, ip_address, username, False)
+            trigger_security_check(ip_address)
             cur.close()
             conn.close()
             return {
