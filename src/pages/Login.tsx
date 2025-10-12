@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { setAuthToken } from "@/lib/auth";
 
 const API_URL = "https://functions.poehali.dev/cb189d68-b747-493c-b6b9-5a939f355c3d";
+const TELEGRAM_AUTH_URL = "https://functions.poehali.dev/1de901ae-f25c-4c6f-8148-f992954a8a15";
+const TELEGRAM_BOT_USERNAME = "YOUR_BOT_USERNAME";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,6 +20,53 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
+  const [loginMethod, setLoginMethod] = useState<'password' | 'telegram'>('password');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const telegramData: Record<string, string> = {};
+    
+    urlParams.forEach((value, key) => {
+      telegramData[key] = value;
+    });
+    
+    if (telegramData.id && telegramData.hash) {
+      handleTelegramAuth(telegramData);
+    }
+  }, []);
+
+  const handleTelegramAuth = async (telegramData: Record<string, string>) => {
+    setLoading(true);
+    try {
+      const queryString = new URLSearchParams(telegramData).toString();
+      const response = await fetch(`${TELEGRAM_AUTH_URL}?${queryString}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setAuthToken(data.token, data.username);
+        toast({
+          title: "Добро пожаловать!",
+          description: data.full_name ? `${data.full_name} (@${data.username})` : `Вы вошли через Telegram`,
+        });
+        window.history.replaceState({}, document.title, "/login");
+        navigate("/admin");
+      } else {
+        toast({
+          title: "Ошибка Telegram",
+          description: data.error || "Не удалось войти через Telegram",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось подключиться к серверу",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,6 +214,38 @@ export default function Login() {
             )}
           </Button>
         </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">или</span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            const script = document.createElement('script');
+            script.src = 'https://telegram.org/js/telegram-widget.js?22';
+            script.async = true;
+            script.setAttribute('data-telegram-login', TELEGRAM_BOT_USERNAME);
+            script.setAttribute('data-size', 'large');
+            script.setAttribute('data-auth-url', window.location.href);
+            script.setAttribute('data-request-access', 'write');
+            document.getElementById('telegram-login-container')?.appendChild(script);
+          }}
+          disabled={isLocked}
+        >
+          <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.122.098.155.231.171.324.016.093.036.305.02.469z"/>
+          </svg>
+          Войти через Telegram
+        </Button>
+        <div id="telegram-login-container" className="hidden"></div>
 
         <Button
           variant="ghost"
