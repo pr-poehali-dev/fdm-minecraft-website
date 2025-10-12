@@ -164,10 +164,10 @@ const Index = () => {
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://cdn.poehali.dev/projects/d9e40634-1ac4-4819-ae4f-92f69037068d/files/059ad878-82ee-417f-bb21-13a2f8bdeb8c.jpg" 
-              alt="Minecraft Grass Block" 
-              className="w-24 h-24 md:w-32 md:h-32"
-              style={{animation: "float 3s ease-in-out infinite", imageRendering: "pixelated"}}
+              src="https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856" 
+              alt="Freedom Server" 
+              className="w-full max-w-3xl rounded-lg shadow-2xl border-2 border-primary/30"
+              style={{animation: "float 3s ease-in-out infinite"}}
             />
           </div>
           
