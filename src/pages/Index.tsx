@@ -115,6 +115,41 @@ const Index = () => {
     },
   ];
 
+  const clans = [
+    {
+      name: "Огненные Драконы",
+      description: "Клан воинов, специализирующихся на PvP сражениях и защите территорий",
+      icon: "Flame",
+      color: "from-red-600 to-orange-500",
+      members: 127,
+      level: 45
+    },
+    {
+      name: "Ледяные Стражи",
+      description: "Строители и защитники, создающие неприступные крепости",
+      icon: "Shield",
+      color: "from-blue-600 to-cyan-500",
+      members: 98,
+      level: 38
+    },
+    {
+      name: "Теневые Убийцы",
+      description: "Скрытные рейдеры, мастера грифа и тайных операций",
+      icon: "Zap",
+      color: "from-purple-600 to-indigo-500",
+      members: 156,
+      level: 52
+    },
+    {
+      name: "Изумрудная Империя",
+      description: "Торговцы и фермеры, контролирующие экономику сервера",
+      icon: "Gem",
+      color: "from-green-600 to-emerald-500",
+      members: 89,
+      level: 41
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
@@ -244,6 +279,39 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground">{rule.description}</p>
                 </div>
               </Card>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Кланы сервера</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {clans.map((clan, index) => (
+              <div key={index} className="group relative">
+                <Card className={`bg-gradient-to-br ${clan.color} border-0 p-6 h-48 cursor-pointer transition-all duration-300 hover:h-auto shadow-lg overflow-hidden`}>
+                  <div className="flex flex-col items-center text-center space-y-3 text-white">
+                    <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                      <Icon name={clan.icon as any} size={32} />
+                    </div>
+                    <h3 className="text-base font-bold">{clan.name}</h3>
+                    <div className="text-xs opacity-90 space-y-1">
+                      <p className="flex items-center justify-center gap-1">
+                        <Icon name="Users" size={14} />
+                        {clan.members} участников
+                      </p>
+                      <p className="flex items-center justify-center gap-1">
+                        <Icon name="Trophy" size={14} />
+                        Уровень {clan.level}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-xs leading-relaxed text-center">
+                      {clan.description}
+                    </p>
+                  </div>
+                </Card>
+              </div>
             ))}
           </div>
         </section>
