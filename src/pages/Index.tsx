@@ -130,7 +130,7 @@ const Index = () => {
               FDM.SU
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">
-              Анархия сервер • Версия 1.20.1
+              Гриферский сервер • Версия 1.20.1
             </p>
           </div>
 
@@ -267,7 +267,7 @@ const Index = () => {
 
         <footer className="text-center pt-8 pb-4">
           <p className="text-xs text-muted-foreground">
-            © 2025 FDM.SU • Лучший анархия сервер Minecraft
+            © 2025 FDM.SU • Лучший гриферский сервер Minecraft
           </p>
         </footer>
       </div>
