@@ -122,7 +122,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-12 space-y-16 relative z-10">
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
-            <div className="text-7xl md:text-8xl" style={{animation: "float 3s ease-in-out infinite"}}>⛏️</div>
+            <div className="text-7xl md:text-8xl" style={{animation: "float 3s ease-in-out infinite"}}>🗡️💎</div>
           </div>
           
           <div className="space-y-4">
