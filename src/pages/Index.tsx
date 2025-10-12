@@ -107,6 +107,31 @@ const Index = () => {
     },
   ];
 
+  const serverRules = [
+    {
+      title: "Уважение к игрокам",
+      description: "Будьте вежливы и уважайте других участников сервера",
+      icon: "Heart",
+    },
+    {
+      title: "Честная игра",
+      description: "Запрещены читы, дюпы и использование багов",
+      icon: "Shield",
+    },
+    {
+      title: "Не гриферство",
+      description: "Запрещено разрушать чужие постройки без разрешения",
+      icon: "Home",
+    },
+    {
+      title: "Адекватное поведение",
+      description: "Запрещён мат, спам и оскорбления в чате",
+      icon: "MessageSquare",
+    },
+  ];
+
+  const [visitorCount] = useState(Math.floor(Math.random() * 500) + 5000);
+
   return (
     <div className="min-h-screen bg-[#D2691E] text-white">
       <div className="container mx-auto px-4 py-8 space-y-12">
@@ -304,6 +329,72 @@ const Index = () => {
               </div>
             ))}
           </div>
+        </section>
+
+        <section 
+          ref={(el) => (sectionRefs.current['rules'] = el)}
+          id="rules"
+          className={`space-y-6 transition-all duration-700 ${
+            visibleSections.has('rules') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
+          <h2 className="text-2xl md:text-3xl text-center text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
+            Правила сервера
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {serverRules.map((rule, idx) => (
+              <div
+                key={rule.title}
+                className={`transition-all duration-700 ${
+                  visibleSections.has('rules') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ animationDelay: `${idx * 150}ms` }}
+              >
+                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 text-center h-full">
+                  <div className="flex justify-center mb-4">
+                    <Icon name={rule.icon as any} size={40} className="text-[#10B981]" />
+                  </div>
+                  <h3 className="text-xs md:text-sm mb-3 text-white font-bold">
+                    {rule.title}
+                  </h3>
+                  <p className="text-[0.6rem] md:text-xs text-[#10B981]">
+                    {rule.description}
+                  </p>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section 
+          ref={(el) => (sectionRefs.current['stats-footer'] = el)}
+          id="stats-footer"
+          className={`transition-all duration-700 ${
+            visibleSections.has('stats-footer') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
+          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)]">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div className="space-y-2">
+                <Icon name="Eye" size={32} className="mx-auto text-[#10B981]" />
+                <p className="text-2xl md:text-3xl text-white font-bold">{visitorCount}</p>
+                <p className="text-[0.6rem] md:text-xs text-[#10B981]">Посетителей сегодня</p>
+              </div>
+              <div className="space-y-2">
+                <Icon name="Users" size={32} className="mx-auto text-[#10B981]" />
+                <p className="text-2xl md:text-3xl text-white font-bold">5000+</p>
+                <p className="text-[0.6rem] md:text-xs text-[#10B981]">Всего игроков</p>
+              </div>
+              <div className="space-y-2">
+                <Icon name="Clock" size={32} className="mx-auto text-[#10B981]" />
+                <p className="text-2xl md:text-3xl text-white font-bold">24/7</p>
+                <p className="text-[0.6rem] md:text-xs text-[#10B981]">Работа сервера</p>
+              </div>
+              <div className="space-y-2">
+                <Icon name="Zap" size={32} className="mx-auto text-[#10B981]" />
+                <p className="text-2xl md:text-3xl text-white font-bold">99.9%</p>
+                <p className="text-[0.6rem] md:text-xs text-[#10B981]">Uptime</p>
+              </div>
+            </div>
+          </Card>
         </section>
 
         <footer className="text-center py-6 text-xs md:text-sm text-white opacity-80">
