@@ -79,7 +79,7 @@ const Index = () => {
   const serverRules = [
     {
       title: "Без читов",
-      description: "Запрещены читы и баги",
+      description: "Запрещены читы и дюпы",
       icon: "Shield",
     },
     {
