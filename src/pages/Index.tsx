@@ -167,7 +167,7 @@ const Index = () => {
           
           <div className="space-y-4">
             <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow">
-              FDM.SU
+              Freedom
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">
               Гриферский сервер • Версия 1.20.1
@@ -256,8 +256,12 @@ const Index = () => {
                 <p className="text-destructive font-semibold">⚠️ Forge не поддерживается</p>
                 <p className="text-muted-foreground text-[0.65rem] mt-1">Версии 1.20.5 - 1.21.2</p>
               </div>
+              <div className="p-2 bg-primary/10 rounded border border-primary/30">
+                <p className="text-primary font-semibold">🛡️ Система модерации</p>
+                <p className="text-muted-foreground text-[0.65rem] mt-1">Муты, баны, анти-спам система</p>
+              </div>
               <p className="text-muted-foreground text-[0.65rem] leading-relaxed">
-                Лучший анархия сервер! Кастомные предметы, голосовой чат, полная свобода действий.
+                Лучший гриферский сервер! Кастомные предметы, голосовой чат, полная свобода действий.
               </p>
             </div>
           </Card>
