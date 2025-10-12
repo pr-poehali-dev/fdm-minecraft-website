@@ -6,35 +6,35 @@
 
 @layer base {
   :root {
-    --background: 20 30% 10%;
-    --foreground: 120 40% 95%;
+    --background: 220 25% 12%;
+    --foreground: 0 0% 98%;
 
-    --card: 20 40% 20%;
-    --card-foreground: 120 40% 95%;
+    --card: 220 20% 18%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 20 40% 20%;
-    --popover-foreground: 120 40% 95%;
+    --popover: 220 20% 18%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 142 76% 36%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 142 70% 55%;
+    --primary-foreground: 220 25% 12%;
 
-    --secondary: 25 50% 45%;
+    --secondary: 267 80% 65%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 20 20% 30%;
-    --muted-foreground: 120 20% 70%;
+    --muted: 220 15% 25%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 142 76% 36%;
+    --accent: 267 80% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 25 40% 35%;
-    --input: 25 40% 35%;
-    --ring: 142 76% 36%;
+    --border: 220 15% 28%;
+    --input: 220 15% 28%;
+    --ring: 142 70% 55%;
 
-    --radius: 0rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +101,25 @@
     @apply bg-background text-foreground;
     font-family: "Press Start 2P", cursive;
     image-rendering: pixelated;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
 }
