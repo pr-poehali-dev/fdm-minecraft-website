@@ -33,7 +33,7 @@ def check_rate_limit(conn, ip_address: str) -> tuple[bool, int]:
     lockout_time = datetime.utcnow() - timedelta(minutes=LOCKOUT_MINUTES)
     
     cur.execute(
-        "SELECT COUNT(*) FROM login_attempts WHERE ip_address = %s AND attempt_time > %s AND success = FALSE",
+        "SELECT COUNT(*) FROM t_p55599668_fdm_minecraft_websit.login_attempts WHERE ip_address = %s AND attempt_time > %s AND success = FALSE",
         (ip_address, lockout_time)
     )
     failed_attempts = cur.fetchone()[0]
@@ -45,21 +45,21 @@ def check_rate_limit(conn, ip_address: str) -> tuple[bool, int]:
     
     return is_locked, remaining
 
-def log_attempt(conn, ip_address: str, username: str, success: bool):
+def log_attempt(conn, ip_address: str, username: str, success: bool, user_agent: str = '', failure_reason: str = ''):
     cur = conn.cursor()
     cur.execute(
-        "INSERT INTO login_attempts (ip_address, username, success) VALUES (%s, %s, %s)",
-        (ip_address, username, success)
+        "INSERT INTO t_p55599668_fdm_minecraft_websit.login_attempts (ip_address, username, success, user_agent, failure_reason) VALUES (%s, %s, %s, %s, %s)",
+        (ip_address, username, success, user_agent, failure_reason)
     )
     conn.commit()
     cur.close()
 
-def trigger_security_check(ip_address: str):
+def trigger_security_check(conn, ip_address: str):
     try:
         cur = conn.cursor()
         one_minute_ago = datetime.utcnow() - timedelta(minutes=1)
         cur.execute(
-            "SELECT COUNT(*) FROM login_attempts WHERE ip_address = %s AND success = FALSE AND attempt_time > %s",
+            "SELECT COUNT(*) FROM t_p55599668_fdm_minecraft_websit.login_attempts WHERE ip_address = %s AND success = FALSE AND attempt_time > %s",
             (ip_address, one_minute_ago)
         )
         failed_count = cur.fetchone()[0]
@@ -91,6 +91,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         username = body_data.get('username', '')
         password = body_data.get('password', '')
         ip_address = get_client_ip(event)
+        user_agent = event.get('headers', {}).get('user-agent', '')
         
         if not username or not password:
             return {
@@ -120,14 +121,14 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cur = conn.cursor()
         
         cur.execute(
-            "SELECT id, password_hash FROM admin_users WHERE username = %s",
+            "SELECT id, password_hash, is_active, role, full_name FROM t_p55599668_fdm_minecraft_websit.admin_users WHERE username = %s",
             (username,)
         )
         user = cur.fetchone()
         
         if not user:
-            log_attempt(conn, ip_address, username, False)
-            trigger_security_check(ip_address)
+            log_attempt(conn, ip_address, username, False, user_agent, 'user_not_found')
+            trigger_security_check(conn, ip_address)
             cur.close()
             conn.close()
             return {
@@ -140,11 +141,22 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 })
             }
         
-        user_id, password_hash = user
+        user_id, password_hash, is_active, role, full_name = user
+        
+        if not is_active:
+            log_attempt(conn, ip_address, username, False, user_agent, 'account_disabled')
+            cur.close()
+            conn.close()
+            return {
+                'statusCode': 403,
+                'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                'isBase64Encoded': False,
+                'body': json.dumps({'error': 'Account is disabled'})
+            }
         
         if not bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8')):
-            log_attempt(conn, ip_address, username, False)
-            trigger_security_check(ip_address)
+            log_attempt(conn, ip_address, username, False, user_agent, 'invalid_password')
+            trigger_security_check(conn, ip_address)
             cur.close()
             conn.close()
             return {
@@ -157,7 +169,13 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 })
             }
         
-        log_attempt(conn, ip_address, username, True)
+        log_attempt(conn, ip_address, username, True, user_agent)
+        
+        cur.execute(
+            "UPDATE t_p55599668_fdm_minecraft_websit.admin_users SET last_login = %s WHERE id = %s",
+            (datetime.utcnow(), user_id)
+        )
+        conn.commit()
         cur.close()
         conn.close()
         
@@ -165,6 +183,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             {
                 'user_id': user_id,
                 'username': username,
+                'role': role,
                 'exp': datetime.utcnow() + timedelta(days=7)
             },
             JWT_SECRET,
@@ -175,7 +194,12 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'statusCode': 200,
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
             'isBase64Encoded': False,
-            'body': json.dumps({'token': token, 'username': username})
+            'body': json.dumps({
+                'token': token,
+                'username': username,
+                'role': role,
+                'full_name': full_name
+            })
         }
     
     return {

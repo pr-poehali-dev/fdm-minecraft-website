@@ -31,12 +31,8 @@ export default function SecurityLogs() {
   const authUser = getAuthUser();
 
   useEffect(() => {
-    if (!authUser) {
-      navigate("/login");
-      return;
-    }
     fetchLogs();
-  }, [authUser, navigate]);
+  }, []);
 
   const fetchLogs = async () => {
     try {

@@ -22,6 +22,7 @@ const GALLERY_API_URL = "https://functions.poehali.dev/96ce21ed-e22a-41d3-a430-b
 export default function Admin() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<'gallery' | 'settings'>('gallery');
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -35,12 +36,8 @@ export default function Admin() {
   const authUser = getAuthUser();
 
   useEffect(() => {
-    if (!authUser) {
-      navigate("/login");
-      return;
-    }
     fetchPhotos();
-  }, [authUser, navigate]);
+  }, []);
 
   const fetchPhotos = async () => {
     try {
@@ -147,32 +144,59 @@ export default function Admin() {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
 
       <nav className="relative z-20 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Админ-панель
-          </h1>
-          <div className="flex gap-4 items-center">
-            <span className="text-sm text-muted-foreground">
-              <Icon name="User" size={16} className="inline mr-1" />
-              {authUser.username}
-            </span>
-            <Button variant="ghost" onClick={() => navigate("/admin/security")}>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Админ-панель
+            </h1>
+            <div className="flex gap-4 items-center">
+              <span className="text-sm text-muted-foreground">
+                <Icon name="User" size={16} className="inline mr-1" />
+                {authUser.username}
+              </span>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+                <Icon name="Home" size={18} className="mr-2" />
+                На сайт
+              </Button>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                <Icon name="LogOut" size={18} className="mr-2" />
+                Выход
+              </Button>
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <Button
+              variant={activeTab === 'gallery' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setActiveTab('gallery')}
+            >
+              <Icon name="Image" size={18} className="mr-2" />
+              Галерея
+            </Button>
+            <Button
+              variant={activeTab === 'settings' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setActiveTab('settings')}
+            >
+              <Icon name="Settings" size={18} className="mr-2" />
+              Настройки
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/admin/security")}
+            >
               <Icon name="Shield" size={18} className="mr-2" />
               Безопасность
-            </Button>
-            <Button variant="ghost" onClick={() => navigate("/")}>
-              <Icon name="Home" size={18} className="mr-2" />
-              На сайт
-            </Button>
-            <Button variant="ghost" onClick={handleLogout}>
-              <Icon name="LogOut" size={18} className="mr-2" />
-              Выход
             </Button>
           </div>
         </div>
       </nav>
 
       <div className="container mx-auto px-4 py-12 space-y-8 relative z-10">
+        {activeTab === 'gallery' && (
+          <>
         <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-primary/30">
           <h2 className="text-2xl font-bold mb-6 flex items-center">
             <Icon name="Plus" size={24} className="mr-2 text-primary" />
@@ -275,6 +299,81 @@ export default function Admin() {
             </div>
           )}
         </Card>
+          </>
+        )}
+
+        {activeTab === 'settings' && (
+          <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-primary/30">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <Icon name="Settings" size={24} className="mr-2 text-primary" />
+              Настройки
+            </h2>
+            
+            <div className="space-y-6">
+              <div className="p-4 border border-primary/20 rounded-lg">
+                <h3 className="text-lg font-semibold mb-2 flex items-center">
+                  <Icon name="Users" size={20} className="mr-2" />
+                  Управление пользователями
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Добавляйте и удаляйте администраторов системы
+                </p>
+                <Button variant="outline" size="sm">
+                  <Icon name="UserPlus" size={16} className="mr-2" />
+                  Добавить администратора
+                </Button>
+              </div>
+
+              <div className="p-4 border border-primary/20 rounded-lg">
+                <h3 className="text-lg font-semibold mb-2 flex items-center">
+                  <Icon name="Database" size={20} className="mr-2" />
+                  База данных
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Управление данными и резервные копии
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Icon name="Download" size={16} className="mr-2" />
+                    Экспорт
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Icon name="Upload" size={16} className="mr-2" />
+                    Импорт
+                  </Button>
+                </div>
+              </div>
+
+              <div className="p-4 border border-primary/20 rounded-lg">
+                <h3 className="text-lg font-semibold mb-2 flex items-center">
+                  <Icon name="Palette" size={20} className="mr-2" />
+                  Внешний вид
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Настройки темы и цветовой схемы
+                </p>
+                <Button variant="outline" size="sm">
+                  <Icon name="Paintbrush" size={16} className="mr-2" />
+                  Изменить тему
+                </Button>
+              </div>
+
+              <div className="p-4 border border-red-500/20 rounded-lg">
+                <h3 className="text-lg font-semibold mb-2 flex items-center text-red-500">
+                  <Icon name="AlertTriangle" size={20} className="mr-2" />
+                  Опасная зона
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Действия, которые могут повлиять на систему
+                </p>
+                <Button variant="destructive" size="sm">
+                  <Icon name="Trash2" size={16} className="mr-2" />
+                  Очистить все данные
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   );

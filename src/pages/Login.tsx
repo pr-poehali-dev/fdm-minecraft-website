@@ -37,8 +37,8 @@ export default function Login() {
       if (response.ok) {
         setAuthToken(data.token, data.username);
         toast({
-          title: "Успешно!",
-          description: "Вы вошли в админ-панель",
+          title: "Добро пожаловать!",
+          description: data.full_name ? `${data.full_name} (${data.role})` : `Вы вошли как ${data.username}`,
         });
         navigate("/admin");
       } else if (response.status === 429) {
@@ -46,6 +46,12 @@ export default function Login() {
         toast({
           title: "Аккаунт заблокирован",
           description: data.error || `Слишком много попыток входа. Попробуйте через ${data.lockout_minutes || 15} минут`,
+          variant: "destructive",
+        });
+      } else if (response.status === 403) {
+        toast({
+          title: "Доступ запрещен",
+          description: data.error || "Ваш аккаунт отключен",
           variant: "destructive",
         });
       } else {
@@ -88,9 +94,9 @@ export default function Login() {
             <Icon name="Lock" size={48} className="text-primary" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Админ-панель
+            Вход в админ-панель
           </h1>
-          <p className="text-muted-foreground">Войдите для управления сайтом</p>
+          <p className="text-muted-foreground">Minecraft Server - Панель управления</p>
         </div>
 
         {isLocked && (
