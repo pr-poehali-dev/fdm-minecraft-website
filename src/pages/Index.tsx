@@ -11,8 +11,8 @@ const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   
-  const [onlinePlayers, setOnlinePlayers] = useState(47);
-  const [maxPlayers, setMaxPlayers] = useState(100);
+  const [onlinePlayers, setOnlinePlayers] = useState(0);
+  const [maxPlayers, setMaxPlayers] = useState(128);
   const [isLoading, setIsLoading] = useState(false);
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
 
