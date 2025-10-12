@@ -16,6 +16,8 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,10 +41,29 @@ export default function Login() {
           description: "Вы вошли в админ-панель",
         });
         navigate("/admin");
+      } else if (response.status === 429) {
+        setIsLocked(true);
+        toast({
+          title: "Аккаунт заблокирован",
+          description: data.error || `Слишком много попыток входа. Попробуйте через ${data.lockout_minutes || 15} минут`,
+          variant: "destructive",
+        });
       } else {
+        if (data.remaining_attempts !== undefined) {
+          setRemainingAttempts(data.remaining_attempts);
+        }
+        
+        let description = data.error || "Неверные данные";
+        if (data.remaining_attempts !== undefined && data.remaining_attempts > 0) {
+          description += `. Осталось попыток: ${data.remaining_attempts}`;
+        } else if (data.remaining_attempts === 0) {
+          description = "Слишком много неудачных попыток. Аккаунт заблокирован на 15 минут";
+          setIsLocked(true);
+        }
+        
         toast({
           title: "Ошибка",
-          description: data.error || "Неверные данные",
+          description,
           variant: "destructive",
         });
       }
@@ -72,6 +93,27 @@ export default function Login() {
           <p className="text-muted-foreground">Войдите для управления сайтом</p>
         </div>
 
+        {isLocked && (
+          <div className="p-4 bg-destructive/10 border-2 border-destructive/30 rounded-lg">
+            <div className="flex items-center gap-2 text-destructive">
+              <Icon name="ShieldAlert" size={20} />
+              <p className="text-sm font-semibold">Доступ временно заблокирован</p>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Слишком много неудачных попыток входа. Попробуйте через 15 минут.
+            </p>
+          </div>
+        )}
+
+        {!isLocked && remainingAttempts !== null && remainingAttempts <= 2 && (
+          <div className="p-4 bg-orange-500/10 border-2 border-orange-500/30 rounded-lg">
+            <div className="flex items-center gap-2 text-orange-500">
+              <Icon name="AlertTriangle" size={20} />
+              <p className="text-sm font-semibold">Осталось попыток: {remainingAttempts}</p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="username">Логин</Label>
@@ -82,6 +124,7 @@ export default function Login() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Введите логин"
               required
+              disabled={isLocked}
             />
           </div>
 
@@ -94,13 +137,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Введите пароль"
               required
+              disabled={isLocked}
             />
           </div>
 
           <Button
             type="submit"
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-            disabled={loading}
+            disabled={loading || isLocked}
           >
             {loading ? (
               <>
