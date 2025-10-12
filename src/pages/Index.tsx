@@ -202,6 +202,63 @@ const Index = () => {
           <p className="text-sm md:text-base text-[#FFFFFF] opacity-90">
             Сервер выживания и приключений
           </p>
+          
+          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] max-w-4xl mx-auto">
+            <div className="space-y-4">
+              <div className="text-center">
+                <h2 className="text-xl md:text-2xl text-[#10B981] mb-3">О сервере</h2>
+                <div className="text-xs md:text-sm text-white space-y-2 mb-4">
+                  <p><span className="text-[#10B981] font-bold">Версия:</span> 1.20.1 | Поддержка: 1.7 - 1.21.7</p>
+                  <p className="text-[#FF6B6B]">⚠️ Forge 1.20.5 - 1.21.2 не поддерживаются</p>
+                </div>
+              </div>
+              
+              <div className="text-left text-xs md:text-sm text-white space-y-3 leading-relaxed">
+                <p className="text-center text-base md:text-lg font-bold text-[#10B981]">
+                  Народ, все чухня. Играйте на лучшем Minecraft-сервере мира (но это не точно) Freedom!
+                </p>
+                
+                <p>
+                  Это самый амбициозный Minecraft-проект за все время (админа), который затрагивает буквально каждый аспект игры (и вашей жизни):
+                </p>
+                
+                <ul className="space-y-2 pl-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Местные земли настолько изуродованы, что кажется на сервере есть новые биомы, данжи и структуры</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Поддержка кастомных анимаций (Emotecrafts)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Поддержка голосового чата прямо в игре (Simple Voice Chat), чтобы твой кореш смог издавать для тебя незабываемые звуки</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>У местных игроков столько TNT, кристаллов и якорей, что твоя RTX будет создавать динамическое освещение огня прямо в реальности</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Всякие прикалюхи, типа пишешь сообщение, а вокруг тебя такие огоньки: ВЖУХ</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Новые монстры, баги и боссы</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#10B981] mt-0.5">▪</span>
+                    <span>Нелегальные предметы, инструменты, ресурсы, шмотки и многое-многое другое за что вас сможет забанить администрация!</span>
+                  </li>
+                </ul>
+                
+                <p className="text-center text-base md:text-lg font-bold text-[#10B981] pt-2">
+                  Короче, ваша жизнь никогда не будет прежней)
+                </p>
+              </div>
+            </div>
+          </Card>
         </header>
 
         <Card 
