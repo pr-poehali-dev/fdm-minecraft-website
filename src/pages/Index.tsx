@@ -123,9 +123,9 @@ const Index = () => {
 
   const clans = [
     {
-      name: "Огненные Драконы",
-      description: "Клан воинов, специализирующихся на PvP сражениях и защите территорий",
-      icon: "Flame",
+      name: "Красный Рассвет",
+      description: "Старейший и крупнейший клан сервера. Основан _GACHI_MAN, прошёл через множество войн и возрождений",
+      icon: "Sunrise",
       color: "from-red-600 to-orange-500",
       members: 127,
       level: 45
