@@ -298,43 +298,18 @@ const Index = () => {
           </Card>
         </div>
 
-        {onlineHistory.length > 0 && (
-          <section className="space-y-6">
-            <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">График онлайна</h2>
-            <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 shadow-lg">
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={onlineHistory}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis 
-                    dataKey="time" 
-                    stroke="rgba(255,255,255,0.5)"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <YAxis 
-                    stroke="rgba(255,255,255,0.5)"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'rgba(0,0,0,0.8)', 
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      borderRadius: '8px'
-                    }}
-                    labelStyle={{ color: '#fff' }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="players" 
-                    stroke="hsl(var(--primary))" 
-                    strokeWidth={2}
-                    dot={{ fill: 'hsl(var(--primary))' }}
-                    name="Игроков"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card>
-          </section>
-        )}
+        <section className="space-y-6">
+          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">График онлайна</h2>
+          <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 shadow-lg">
+            <iframe 
+              src="https://minecraftrating.ru/server_chart/282092/" 
+              width="100%" 
+              height="300" 
+              frameBorder="0"
+              title="График онлайна сервера"
+            />
+          </Card>
+        </section>
 
         <section className="space-y-6">
           <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Правила сервера</h2>
