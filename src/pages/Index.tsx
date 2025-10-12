@@ -2,8 +2,10 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Index = () => {
+  const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const onlinePlayers = 47;
   const maxPlayers = 100;
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
@@ -68,9 +70,9 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8 space-y-12">
         <header className="text-center space-y-6 animate-fade-in">
           <div className="flex justify-center mb-4">
-            <div className="text-6xl">⛏️</div>
+            <div className="text-6xl animate-bounce-pixel">⛏️</div>
           </div>
-          <h1 className="text-4xl md:text-6xl text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
+          <h1 className="text-4xl md:text-6xl text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)] animate-glow">
             FDM.SU
           </h1>
           <p className="text-sm md:text-base text-[#FFFFFF] opacity-90">
@@ -78,7 +80,7 @@ const Index = () => {
           </p>
         </header>
 
-        <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] transition-all">
+        <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-all cursor-pointer">
           <p className="text-xs md:text-sm mb-2 text-[#10B981]">IP-адрес подключения:</p>
           <p className="text-2xl md:text-4xl text-white font-bold tracking-wider">
             go.fdm.su
@@ -86,7 +88,7 @@ const Index = () => {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
+          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 hover:rotate-1 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Icon name="Users" size={32} className="text-[#10B981]" />
             </div>
@@ -101,7 +103,7 @@ const Index = () => {
             </div>
           </Card>
 
-          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
+          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 hover:rotate-1 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Icon name="Gamepad2" size={32} className="text-[#10B981]" />
             </div>
@@ -126,7 +128,7 @@ const Index = () => {
             </div>
           </Card>
 
-          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
+          <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:scale-105 hover:rotate-1 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Icon name="Activity" size={32} className="text-[#10B981]" />
             </div>
@@ -137,10 +139,17 @@ const Index = () => {
               {activityData.map((data, idx) => (
                 <div
                   key={idx}
-                  className="flex-1 bg-[#10B981] hover:bg-[#DD5016] transition-colors"
+                  className="flex-1 bg-[#10B981] hover:bg-[#DD5016] transition-all duration-300 cursor-pointer relative group"
                   style={{ height: `${(data.players / 70) * 100}%` }}
-                  title={`${data.hour}:00 - ${data.players} игроков`}
-                />
+                  onMouseEnter={() => setHoveredBar(idx)}
+                  onMouseLeave={() => setHoveredBar(null)}
+                >
+                  {hoveredBar === idx && (
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[#8B4513] border-2 border-[#D2691E] px-2 py-1 text-[0.6rem] whitespace-nowrap z-10 shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+                      {data.hour}:00 - {data.players} игроков
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </Card>
@@ -154,9 +163,9 @@ const Index = () => {
             {shopCategories.map((category) => (
               <Card
                 key={category.title}
-                className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all"
+                className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[16px_16px_0px_rgba(0,0,0,0.4)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group"
               >
-                <div className="text-4xl mb-4 text-center">{category.icon}</div>
+                <div className="text-4xl mb-4 text-center group-hover:animate-wiggle">{category.icon}</div>
                 <h3 className="text-xs md:text-sm mb-4 text-[#10B981] text-center min-h-[3rem]">
                   {category.title}
                 </h3>
@@ -174,7 +183,7 @@ const Index = () => {
           <div className="text-center">
             <Button
               asChild
-              className="bg-[#10B981] hover:bg-[#8B4513] text-white border-4 border-[#000] shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)] px-8 py-6 text-xs md:text-sm transition-all"
+              className="bg-[#10B981] hover:bg-[#8B4513] text-white border-4 border-[#000] shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)] hover:translate-x-1 hover:translate-y-1 px-8 py-6 text-xs md:text-sm transition-all duration-200 animate-pulse-slow"
             >
               <a
                 href="https://fdm.trademc.org/"
@@ -203,11 +212,11 @@ const Index = () => {
                 rel="noopener noreferrer"
                 className="block"
               >
-                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all text-center">
+                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 text-center group">
                   <Icon
                     name={social.icon as any}
                     size={48}
-                    className="mx-auto mb-4 text-[#10B981]"
+                    className="mx-auto mb-4 text-[#10B981] group-hover:animate-bounce-pixel"
                   />
                   <h3 className="text-sm md:text-base mb-2 text-white">
                     {social.name}
