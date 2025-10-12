@@ -11,8 +11,9 @@ const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   
-  const onlinePlayers = 47;
-  const maxPlayers = 100;
+  const [onlinePlayers, setOnlinePlayers] = useState(47);
+  const [maxPlayers, setMaxPlayers] = useState(100);
+  const [isLoading, setIsLoading] = useState(false);
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
 
   useEffect(() => {
@@ -32,6 +33,32 @@ const Index = () => {
     });
 
     return () => observer.disconnect();
+  }, []);
+
+  const fetchServerStatus = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://misterlauncher.org/server/fdm/');
+      const html = await response.text();
+      
+      const onlineMatch = html.match(/\"online\":(\d+)/);
+      const maxMatch = html.match(/\"max\":(\d+)/);
+      
+      if (onlineMatch && maxMatch) {
+        setOnlinePlayers(parseInt(onlineMatch[1]));
+        setMaxPlayers(parseInt(maxMatch[1]));
+      }
+    } catch (error) {
+      console.error('Failed to fetch server status:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchServerStatus();
+    const interval = setInterval(fetchServerStatus, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const copyIP = async () => {
@@ -206,9 +233,17 @@ const Index = () => {
             </h3>
             <div className="text-center">
               <p className="text-3xl md:text-4xl mb-2 text-white">
-                {onlinePlayers}/{maxPlayers}
+                {isLoading ? '...' : `${onlinePlayers}/${maxPlayers}`}
               </p>
               <Progress value={onlinePercentage} className="h-3 bg-[#D2691E]" />
+              <button
+                onClick={fetchServerStatus}
+                className="mt-3 text-[0.6rem] text-[#10B981] hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto"
+                disabled={isLoading}
+              >
+                <Icon name="RefreshCw" size={12} className={isLoading ? 'animate-spin' : ''} />
+                Обновить
+              </button>
             </div>
           </Card>
 
