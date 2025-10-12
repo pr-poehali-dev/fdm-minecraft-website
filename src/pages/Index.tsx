@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 
 const Index = () => {
+  const { toast } = useToast();
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
@@ -31,6 +33,24 @@ const Index = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  const copyIP = async () => {
+    try {
+      await navigator.clipboard.writeText('go.fdm.su');
+      toast({
+        title: "IP скопирован!",
+        description: "go.fdm.su скопирован в буфер обмена",
+        duration: 3000,
+      });
+    } catch (err) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось скопировать IP",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
 
   const gameModes = [
     { name: "Выживание", percentage: 65, color: "bg-[#10B981]" },
@@ -105,13 +125,20 @@ const Index = () => {
         <Card 
           ref={(el) => (sectionRefs.current['ip-card'] = el)}
           id="ip-card"
-          className={`bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-all cursor-pointer ${
+          className={`bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] transition-all ${
             visibleSections.has('ip-card') ? 'animate-fade-in' : 'opacity-0'
           }`}>
           <p className="text-xs md:text-sm mb-2 text-[#10B981]">IP-адрес подключения:</p>
-          <p className="text-2xl md:text-4xl text-white font-bold tracking-wider">
+          <p className="text-2xl md:text-4xl text-white font-bold tracking-wider mb-4">
             go.fdm.su
           </p>
+          <Button
+            onClick={copyIP}
+            className="bg-[#10B981] hover:bg-[#8B4513] text-white border-4 border-[#000] shadow-[4px_4px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.3)] hover:translate-x-0.5 hover:translate-y-0.5 px-6 py-3 text-[0.6rem] md:text-xs transition-all duration-200"
+          >
+            <Icon name="Copy" size={16} className="mr-2" />
+            Скопировать IP
+          </Button>
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
