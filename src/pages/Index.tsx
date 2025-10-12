@@ -122,7 +122,12 @@ const Index = () => {
       <div className="container mx-auto px-4 py-12 space-y-16 relative z-10">
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
-            <div className="text-7xl md:text-8xl" style={{animation: "float 3s ease-in-out infinite"}}>🗡️💎</div>
+            <img 
+              src="https://cdn.poehali.dev/projects/d9e40634-1ac4-4819-ae4f-92f69037068d/files/6bd98f91-b982-44fe-bcd7-f1684a20c442.jpg" 
+              alt="Minecraft Block" 
+              className="w-24 h-24 md:w-32 md:h-32"
+              style={{animation: "float 3s ease-in-out infinite", imageRendering: "pixelated"}}
+            />
           </div>
           
           <div className="space-y-4">
