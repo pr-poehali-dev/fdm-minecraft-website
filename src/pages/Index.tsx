@@ -235,19 +235,18 @@ const Index = () => {
               Онлайн
             </h3>
             <div className="text-center space-y-3">
-              <p className="text-4xl font-bold text-primary">
-                {isLoading ? '...' : `${onlinePlayers}`}
-              </p>
-              <p className="text-xs text-muted-foreground">из {maxPlayers} игроков</p>
-              <Progress value={onlinePercentage} className="h-2" />
-              <button
-                onClick={fetchServerStatus}
-                className="mt-2 text-xs text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2 mx-auto"
-                disabled={isLoading}
+              <a 
+                href="https://minestatus.net/server/go.fdm.su" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block mx-auto"
               >
-                <Icon name="RefreshCw" size={14} className={isLoading ? 'animate-spin' : ''} />
-                Обновить
-              </button>
+                <img 
+                  src="https://static.minestatus.net/b/go.fdm.su" 
+                  alt="Minestatus" 
+                  className="mx-auto rounded-lg"
+                />
+              </a>
             </div>
           </Card>
 
