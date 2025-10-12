@@ -304,16 +304,6 @@ const Index = () => {
                       <Icon name={clan.icon as any} size={32} />
                     </div>
                     <h3 className="text-base font-bold">{clan.name}</h3>
-                    <div className="text-xs opacity-90 space-y-1">
-                      <p className="flex items-center justify-center gap-1">
-                        <Icon name="Users" size={14} />
-                        {clan.members} участников
-                      </p>
-                      <p className="flex items-center justify-center gap-1">
-                        <Icon name="Trophy" size={14} />
-                        Уровень {clan.level}
-                      </p>
-                    </div>
                   </div>
                   <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-white text-xs leading-relaxed text-center">
