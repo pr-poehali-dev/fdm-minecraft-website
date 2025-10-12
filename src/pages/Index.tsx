@@ -2,13 +2,35 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Index = () => {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  
   const onlinePlayers = 47;
   const maxPlayers = 100;
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    Object.values(sectionRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const gameModes = [
     { name: "Выживание", percentage: 65, color: "bg-[#10B981]" },
@@ -80,7 +102,12 @@ const Index = () => {
           </p>
         </header>
 
-        <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-all cursor-pointer">
+        <Card 
+          ref={(el) => (sectionRefs.current['ip-card'] = el)}
+          id="ip-card"
+          className={`bg-[#8B4513] border-4 border-[#D2691E] p-6 text-center shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:scale-105 transition-all cursor-pointer ${
+            visibleSections.has('ip-card') ? 'animate-fade-in' : 'opacity-0'
+          }`}>
           <p className="text-xs md:text-sm mb-2 text-[#10B981]">IP-адрес подключения:</p>
           <p className="text-2xl md:text-4xl text-white font-bold tracking-wider">
             go.fdm.su
@@ -155,17 +182,26 @@ const Index = () => {
           </Card>
         </div>
 
-        <section className="space-y-6">
+        <section 
+          ref={(el) => (sectionRefs.current['shop'] = el)}
+          id="shop"
+          className={`space-y-6 transition-all duration-700 ${
+            visibleSections.has('shop') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
           <h2 className="text-2xl md:text-3xl text-center text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
             Магазин сервера
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {shopCategories.map((category) => (
-              <Card
+            {shopCategories.map((category, idx) => (
+              <div
                 key={category.title}
-                className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[16px_16px_0px_rgba(0,0,0,0.4)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                className={`transition-all duration-700 ${
+                  visibleSections.has('shop') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ animationDelay: `${idx * 150}ms` }}
               >
-                <div className="text-4xl mb-4 text-center group-hover:animate-wiggle">{category.icon}</div>
+                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[16px_16px_0px_rgba(0,0,0,0.4)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 cursor-pointer group h-full">
+                  <div className="text-4xl mb-4 text-center group-hover:animate-wiggle">{category.icon}</div>
                 <h3 className="text-xs md:text-sm mb-4 text-[#10B981] text-center min-h-[3rem]">
                   {category.title}
                 </h3>
@@ -178,6 +214,7 @@ const Index = () => {
                   ))}
                 </ul>
               </Card>
+              </div>
             ))}
           </div>
           <div className="text-center">
@@ -196,7 +233,12 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="space-y-6">
+        <section 
+          ref={(el) => (sectionRefs.current['social'] = el)}
+          id="social"
+          className={`space-y-6 transition-all duration-700 ${
+            visibleSections.has('social') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+          }`}>
           <h2 className="text-2xl md:text-3xl text-center text-[#10B981] drop-shadow-[4px_4px_0px_rgba(0,0,0,0.8)]">
             Социальные сети
           </h2>
@@ -204,15 +246,21 @@ const Index = () => {
             Более 5000+ игроков уже с нами
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {socialLinks.map((social) => (
-              <a
+            {socialLinks.map((social, idx) => (
+              <div
                 key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
+                className={`transition-all duration-700 ${
+                  visibleSections.has('social') ? 'animate-fade-in' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ animationDelay: `${idx * 150}ms` }}
               >
-                <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 text-center group">
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <Card className="bg-[#8B4513] border-4 border-[#D2691E] p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.3)] hover:shadow-[12px_12px_0px_rgba(0,0,0,0.3)] hover:-translate-y-2 hover:scale-105 transition-all duration-300 text-center group h-full">
                   <Icon
                     name={social.icon as any}
                     size={48}
@@ -226,6 +274,7 @@ const Index = () => {
                   </p>
                 </Card>
               </a>
+              </div>
             ))}
           </div>
         </section>
