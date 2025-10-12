@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Index = () => {
   const { toast } = useToast();
@@ -14,6 +15,7 @@ const Index = () => {
   const [onlinePlayers, setOnlinePlayers] = useState(0);
   const [maxPlayers, setMaxPlayers] = useState(128);
   const [isLoading, setIsLoading] = useState(false);
+  const [onlineHistory, setOnlineHistory] = useState<Array<{time: string, players: number}>>([]);
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
 
   useEffect(() => {
@@ -38,15 +40,20 @@ const Index = () => {
   const fetchServerStatus = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('https://misterlauncher.org/server/fdm/');
-      const html = await response.text();
+      const response = await fetch('https://functions.poehali.dev/3cdd085b-a675-4bdc-a58c-4bbfa9f6d49a');
+      const data = await response.json();
       
-      const onlineMatch = html.match(/\"online\":(\d+)/);
-      const maxMatch = html.match(/\"max\":(\d+)/);
-      
-      if (onlineMatch && maxMatch) {
-        setOnlinePlayers(parseInt(onlineMatch[1]));
-        setMaxPlayers(parseInt(maxMatch[1]));
+      if (data.online !== undefined && data.max !== undefined) {
+        setOnlinePlayers(data.online);
+        setMaxPlayers(data.max);
+        
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        setOnlineHistory(prev => {
+          const newHistory = [...prev, { time: timeStr, players: data.online }];
+          return newHistory.slice(-20);
+        });
       }
     } catch (error) {
       console.error('Failed to fetch server status:', error);
@@ -57,7 +64,7 @@ const Index = () => {
 
   useEffect(() => {
     fetchServerStatus();
-    const interval = setInterval(fetchServerStatus, 60000);
+    const interval = setInterval(fetchServerStatus, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -290,6 +297,44 @@ const Index = () => {
             </div>
           </Card>
         </div>
+
+        {onlineHistory.length > 0 && (
+          <section className="space-y-6">
+            <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">График онлайна</h2>
+            <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 shadow-lg">
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={onlineHistory}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <XAxis 
+                    dataKey="time" 
+                    stroke="rgba(255,255,255,0.5)"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis 
+                    stroke="rgba(255,255,255,0.5)"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'rgba(0,0,0,0.8)', 
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '8px'
+                    }}
+                    labelStyle={{ color: '#fff' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="players" 
+                    stroke="hsl(var(--primary))" 
+                    strokeWidth={2}
+                    dot={{ fill: 'hsl(var(--primary))' }}
+                    name="Игроков"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
+          </section>
+        )}
 
         <section className="space-y-6">
           <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Правила сервера</h2>
