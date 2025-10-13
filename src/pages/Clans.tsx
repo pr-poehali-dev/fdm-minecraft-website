@@ -189,35 +189,15 @@ const Clans = () => {
                     </div>
                   </div>
                   
-                  <div className={`px-4 py-2 bg-gradient-to-br ${clan.color} rounded-lg text-white text-center min-w-[80px]`}>
-                    <div className="text-2xl font-bold">{clan.level}</div>
-                    <div className="text-xs opacity-80">Уровень</div>
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-card/50 backdrop-blur-sm rounded-lg p-3 border border-border/30">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Icon name="Users" size={16} className="text-primary" />
-                      <span className="text-xs text-muted-foreground">Участники</span>
+                <div className="flex justify-center">
+                  <div className="bg-card/50 backdrop-blur-sm rounded-lg p-4 border border-border/30 min-w-[200px]">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Icon name="Crown" size={20} className="text-primary" />
+                      <span className="text-sm text-muted-foreground">Глава клана</span>
                     </div>
-                    <div className="text-xl font-bold text-foreground">{clan.members}</div>
-                  </div>
-                  
-                  <div className="bg-card/50 backdrop-blur-sm rounded-lg p-3 border border-border/30">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Icon name="Calendar" size={16} className="text-primary" />
-                      <span className="text-xs text-muted-foreground">Основан</span>
-                    </div>
-                    <div className="text-xl font-bold text-foreground">{clan.founded}</div>
-                  </div>
-                  
-                  <div className="bg-card/50 backdrop-blur-sm rounded-lg p-3 border border-border/30">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Icon name="Crown" size={16} className="text-primary" />
-                      <span className="text-xs text-muted-foreground">Глава</span>
-                    </div>
-                    <div className="text-sm font-bold text-foreground truncate">{clan.leader}</div>
+                    <div className="text-xl font-bold text-foreground text-center">{clan.leader}</div>
                   </div>
                 </div>
 
