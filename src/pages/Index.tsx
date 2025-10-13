@@ -201,11 +201,11 @@ const Index = () => {
             </Button>
             <Button 
               variant="ghost"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/history")}
               className="text-foreground hover:text-primary transition-colors"
             >
-              <Icon name="Lock" size={18} className="mr-2" />
-              Админ
+              <Icon name="BookOpen" size={18} className="mr-2" />
+              Наша История
             </Button>
             <a 
               href="https://fdm.trademc.org/" 
