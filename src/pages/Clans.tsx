@@ -80,6 +80,18 @@ const Clans = () => {
       founded: "2022",
       leader: "Сайранос",
       status: "Неактивен"
+    },
+    {
+      name: "Terrible Dream",
+      description: "Terrible Dream был известен своими достижениями в области грифинга. Его основателем стал Semgaku — игрок на сервере известный своими грифами. В состав клана входили только два человека — Semgaku и hirokkizzZ. Terrible Dream воевал с кланом Красный Рассвет. Однако, когда Semgaku и hirokkizzZ покинули сервер, клан перестал существовать.",
+      icon: "Skull",
+      color: "from-red-900 via-red-800 to-black",
+      bgPattern: "bg-red-950/30",
+      members: 2,
+      level: 28,
+      founded: "2021",
+      leader: "Semgaku",
+      status: "Неактивен"
     }
   ];
 

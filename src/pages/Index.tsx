@@ -178,6 +178,14 @@ const Index = () => {
       color: "from-purple-600 to-pink-500",
       members: 89,
       level: 41
+    },
+    {
+      name: "Terrible Dream",
+      description: "Terrible Dream был известен своими достижениями в области грифинга. Его основателем стал Semgaku — игрок на сервере известный своими грифами. В состав клана входили только два человека — Semgaku и hirokkizzZ. Terrible Dream воевал с кланом Красный Рассвет. Однако, когда Semgaku и hirokkizzZ покинули сервер, клан перестал существовать.",
+      icon: "Skull",
+      color: "from-red-900 to-black",
+      members: 2,
+      level: 28
     }
   ];
 
