@@ -207,6 +207,14 @@ const Index = () => {
               <Icon name="BookOpen" size={18} className="mr-2" />
               Наша История
             </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => navigate("/clans")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <Icon name="Shield" size={18} className="mr-2" />
+              Кланы
+            </Button>
             <a 
               href="https://fdm.trademc.org/" 
               target="_blank" 
@@ -434,28 +442,45 @@ const Index = () => {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Кланы сервера</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {clans.map((clan, index) => (
-              <div key={index} className="group relative">
-                <Card className={`bg-gradient-to-br ${clan.color} border-0 p-6 h-48 cursor-pointer transition-all duration-300 hover:h-auto shadow-lg overflow-hidden`}>
-                  <div className="flex flex-col items-center text-center space-y-3 text-white">
-                    <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
-                      {clan.name === "Orthodox" ? (
-                        <div className="text-4xl">✝️</div>
-                      ) : (
-                        <Icon name={clan.icon as any} size={32} />
-                      )}
+          <div className="text-center space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary">Кланы сервера</h2>
+            <Button 
+              onClick={() => navigate("/clans")}
+              size="lg"
+              className="bg-gradient-to-r from-primary to-accent hover:scale-105 transition-all shadow-lg"
+            >
+              <Icon name="Shield" size={20} className="mr-2" />
+              Посмотреть все кланы
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {clans.slice(0, 3).map((clan, index) => (
+              <Card 
+                key={index} 
+                className={`bg-gradient-to-br ${clan.color} border-0 p-6 cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg`}
+                onClick={() => navigate("/clans")}
+              >
+                <div className="flex flex-col items-center text-center space-y-3 text-white">
+                  <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                    {clan.name === "Orthodox" ? (
+                      <div className="text-4xl">✝️</div>
+                    ) : (
+                      <Icon name={clan.icon as any} size={32} />
+                    )}
+                  </div>
+                  <h3 className="text-lg font-bold">{clan.name}</h3>
+                  <div className="flex gap-4 text-sm">
+                    <div>
+                      <Icon name="Users" size={16} className="inline mr-1" />
+                      {clan.members}
                     </div>
-                    <h3 className="text-base font-bold">{clan.name}</h3>
+                    <div>
+                      <Icon name="Star" size={16} className="inline mr-1" />
+                      {clan.level}
+                    </div>
                   </div>
-                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-white text-xs leading-relaxed text-center">
-                      {clan.description}
-                    </p>
-                  </div>
-                </Card>
-              </div>
+                </div>
+              </Card>
             ))}
           </div>
         </section>
