@@ -469,16 +469,6 @@ const Index = () => {
                     )}
                   </div>
                   <h3 className="text-lg font-bold">{clan.name}</h3>
-                  <div className="flex gap-4 text-sm">
-                    <div>
-                      <Icon name="Users" size={16} className="inline mr-1" />
-                      {clan.members}
-                    </div>
-                    <div>
-                      <Icon name="Star" size={16} className="inline mr-1" />
-                      {clan.level}
-                    </div>
-                  </div>
                 </div>
               </Card>
             ))}
