@@ -22,7 +22,7 @@ interface ClanCardProps {
 export const ClanCard = ({ clan, isHovered, onHover, onLeave }: ClanCardProps) => {
   return (
     <Card
-      className={`relative overflow-hidden border-2 transition-all duration-500 ${
+      className={`relative overflow-hidden border-2 transition-all duration-500 animate-fade-in-scale ${
         isHovered 
           ? 'scale-105 shadow-2xl border-primary' 
           : 'border-border/50 hover:border-primary/50'
@@ -30,13 +30,13 @@ export const ClanCard = ({ clan, isHovered, onHover, onLeave }: ClanCardProps) =
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${clan.color} opacity-10`}></div>
+      <div className={`absolute inset-0 bg-gradient-to-br ${clan.color} opacity-10 transition-opacity duration-300 ${isHovered ? 'opacity-20' : ''}`}></div>
       <div className={`absolute inset-0 ${clan.bgPattern}`}></div>
       
       <div className="relative p-8 space-y-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className={`p-4 bg-gradient-to-br ${clan.color} rounded-xl shadow-lg`}>
+            <div className={`p-4 bg-gradient-to-br ${clan.color} rounded-xl shadow-lg transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
               {clan.name === "Orthodox" ? (
                 <div className="text-4xl">✝️</div>
               ) : (

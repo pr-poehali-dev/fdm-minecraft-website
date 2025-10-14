@@ -14,9 +14,9 @@ interface StatsCardsProps {
 export const StatsCards = ({ features }: StatsCardsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 transition-all shadow-lg">
+      <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-lg animate-fade-in">
         <div className="flex items-center justify-center mb-4">
-          <div className="p-3 bg-primary/20 rounded-lg">
+          <div className="p-3 bg-primary/20 rounded-lg transition-all duration-300 hover:bg-primary/30">
             <Icon name="Users" size={32} className="text-primary" />
           </div>
         </div>
@@ -37,7 +37,7 @@ export const StatsCards = ({ features }: StatsCardsProps) => {
         </div>
       </Card>
 
-      <Card className="bg-card/80 backdrop-blur-sm border-2 border-accent/30 p-6 hover:scale-105 transition-all shadow-lg">
+      <Card className="bg-card/80 backdrop-blur-sm border-2 border-accent/30 p-6 hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
         <div className="flex items-center justify-center mb-4">
           <div className="p-3 bg-accent/20 rounded-lg">
             <Icon name="Sparkles" size={32} className="text-accent" />
@@ -59,9 +59,9 @@ export const StatsCards = ({ features }: StatsCardsProps) => {
         </div>
       </Card>
 
-      <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 transition-all shadow-lg">
+      <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-lg animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <div className="flex items-center justify-center mb-4">
-          <div className="p-3 bg-destructive/20 rounded-lg">
+          <div className="p-3 bg-destructive/20 rounded-lg transition-all duration-300 hover:bg-destructive/30">
             <Icon name="AlertTriangle" size={32} className="text-destructive" />
           </div>
         </div>
