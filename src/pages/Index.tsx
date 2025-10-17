@@ -331,7 +331,7 @@ const Index = () => {
                 className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button"
               >
                 <Icon name="Copy" size={20} className="mr-2" />
-                📋 Копировать
+                Копировать
               </Button>
             </div>
           </Card>
