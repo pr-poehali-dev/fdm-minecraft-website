@@ -40,28 +40,38 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     photos = [
         {
-            'title': 'Эпоха начал',
-            'description': 'Новогодняя ёлка на базе Freedom - начало легендарной истории сервера',
+            'title': 'Ванильная эпоха',
+            'description': '',
+            'image_url': 'https://cdn.poehali.dev/files/ed2a512b-705a-419a-8380-9f3dfc415729.jpg'
+        },
+        {
+            'title': 'Новый год',
+            'description': '',
             'image_url': 'https://cdn.poehali.dev/files/a8d42193-5dc1-4a4f-bac5-6b6ae4d20f7b.png'
         },
         {
+            'title': 'Эпоха начал',
+            'description': '',
+            'image_url': 'https://cdn.poehali.dev/files/9fd0df6d-116e-4fec-8688-83838976b494.jpg'
+        },
+        {
             'title': 'Красный Рассвет lopalopa',
-            'description': 'Легендарный игрок lopalopa на границе территории клана Красный Рассвет',
+            'description': '',
             'image_url': 'https://cdn.poehali.dev/files/aacba224-a488-460c-9872-34db71386eec.png'
         },
         {
             'title': 'Дом с базы Destroyers',
-            'description': 'Эпичный дом с красным ковром на базе клана Destroyers',
+            'description': '',
             'image_url': 'https://cdn.poehali.dev/files/0ec3153c-7a99-477f-b0e6-2c73536006be.png'
         },
         {
             'title': 'База Восход',
-            'description': 'Разрушенная и восстановленная база Восход - символ возрождения клана',
+            'description': '',
             'image_url': 'https://cdn.poehali.dev/files/0a8aff60-6c3c-48a4-906d-76d3494df479.png'
         },
         {
             'title': 'Одна из баз сервера',
-            'description': 'Креативная постройка с гигантским крипером и базой на фоне',
+            'description': '',
             'image_url': 'https://cdn.poehali.dev/files/15fadf42-4cf7-46c5-8911-cc0425708f3a.png'
         }
     ]

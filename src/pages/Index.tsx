@@ -233,8 +233,8 @@ const Index = () => {
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://cdn.poehali.dev/files/a8d42193-5dc1-4a4f-bac5-6b6ae4d20f7b.png" 
-              alt="Эпоха начал - Freedom Server" 
+              src="https://cdn.poehali.dev/files/ed2a512b-705a-419a-8380-9f3dfc415729.jpg" 
+              alt="Ванильная эпоха - Freedom Server" 
               className="w-full max-w-3xl rounded-lg shadow-2xl border-4 border-primary/40 minecraft-card"
               style={{animation: "float 3s ease-in-out infinite"}}
             />
