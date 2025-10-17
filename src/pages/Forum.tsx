@@ -4,8 +4,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+interface ForumMessage {
+  id: number;
+  nickname: string;
+  message: string;
+  created_at: string;
+  status: string;
+  admin_reply: string | null;
+  replied_at: string | null;
+}
 
 const Forum = () => {
   const navigate = useNavigate();
@@ -13,6 +23,31 @@ const Forum = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [answeredMessages, setAnsweredMessages] = useState<ForumMessage[]>([]);
+
+  useEffect(() => {
+    const fetchAnsweredMessages = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b?status=answered');
+        const data = await response.json();
+        setAnsweredMessages(data.messages || []);
+      } catch (error) {
+        console.error('Failed to fetch messages:', error);
+      }
+    };
+    fetchAnsweredMessages();
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,15 +63,37 @@ const Forum = () => {
 
     setIsSubmitting(true);
     
-    setTimeout(() => {
-      toast({
-        title: "✅ Отправлено!",
-        description: "Ваше сообщение получено. Спасибо за обратную связь!",
+    try {
+      const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname: name,
+          message: message
+        })
       });
-      setName("");
-      setMessage("");
+
+      if (response.ok) {
+        toast({
+          title: "✅ Отправлено!",
+          description: "Ваше сообщение получено. Спасибо за обратную связь!",
+        });
+        setName("");
+        setMessage("");
+      } else {
+        throw new Error('Failed to submit');
+      }
+    } catch (error) {
+      toast({
+        title: "❌ Ошибка",
+        description: "Не удалось отправить сообщение. Попробуйте позже.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -181,6 +238,56 @@ const Forum = () => {
               <p className="text-sm text-muted-foreground">Расскажи о своём опыте игры</p>
             </Card>
           </div>
+
+          {answeredMessages.length > 0 && (
+            <div className="space-y-6">
+              <div className="text-center space-y-2">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent minecraft-text">
+                  💬 Ответы администрации
+                </h2>
+                <p className="text-muted-foreground">Последние ответы на вопросы игроков</p>
+              </div>
+
+              {answeredMessages.map((msg) => (
+                <Card key={msg.id} className="bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-500/10 border-2 border-cyan-500/30 p-6 minecraft-card">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start flex-wrap gap-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Icon name="User" size={18} className="text-cyan-400" />
+                          <span className="font-bold text-lg">{msg.nickname}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Icon name="Clock" size={12} />
+                          {formatDate(msg.created_at)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-background/50 rounded-lg p-4 border border-cyan-500/20">
+                      <p className="text-xs font-bold text-cyan-400 mb-2">❓ Вопрос:</p>
+                      <p className="whitespace-pre-wrap text-sm">{msg.message}</p>
+                    </div>
+
+                    {msg.admin_reply && (
+                      <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/30">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Icon name="Shield" size={16} className="text-green-400" />
+                          <p className="text-xs font-bold text-green-400">✅ Ответ администрации:</p>
+                          {msg.replied_at && (
+                            <span className="text-xs text-muted-foreground ml-auto">
+                              {formatDate(msg.replied_at)}
+                            </span>
+                          )}
+                        </div>
+                        <p className="whitespace-pre-wrap text-sm">{msg.admin_reply}</p>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

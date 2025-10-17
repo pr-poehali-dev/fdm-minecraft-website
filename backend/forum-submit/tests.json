@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Get all messages",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "messages": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Submit forum message successfully",
+      "method": "POST",
+      "body": {
+        "nickname": "TestPlayer",
+        "message": "Test message from forum"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "message_id": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

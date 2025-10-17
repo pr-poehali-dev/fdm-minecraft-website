@@ -9,6 +9,7 @@ import Gallery from "./pages/Gallery";
 import History from "./pages/History";
 import Clans from "./pages/Clans";
 import Forum from "./pages/Forum";
+import ForumAdmin from "./pages/ForumAdmin";
 import GalleryAdmin from "./pages/GalleryAdmin";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/history" element={<History />} />
           <Route path="/clans" element={<Clans />} />
           <Route path="/forum" element={<Forum />} />
+          <Route path="/forum-admin" element={<ForumAdmin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
