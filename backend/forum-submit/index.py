@@ -44,24 +44,43 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
 def get_messages(event: Dict[str, Any]) -> Dict[str, Any]:
     params = event.get('queryStringParameters') or {}
     status_filter = params.get('status')
+    nickname_filter = params.get('nickname')
     
     db_url = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(db_url)
     cur = conn.cursor()
     
-    if status_filter:
-        cur.execute(
-            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
-            "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
-            "WHERE status = %s ORDER BY is_read ASC, created_at DESC",
-            (status_filter,)
-        )
+    # Если указан nickname - показываем только его сообщения (для обычных пользователей)
+    if nickname_filter:
+        if status_filter:
+            cur.execute(
+                "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
+                "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
+                "WHERE nickname = %s AND status = %s ORDER BY created_at DESC",
+                (nickname_filter, status_filter)
+            )
+        else:
+            cur.execute(
+                "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
+                "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
+                "WHERE nickname = %s ORDER BY created_at DESC",
+                (nickname_filter,)
+            )
+    # Иначе - показываем все (для админов)
     else:
-        cur.execute(
-            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
-            "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
-            "ORDER BY is_read ASC, created_at DESC"
-        )
+        if status_filter:
+            cur.execute(
+                "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
+                "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
+                "WHERE status = %s ORDER BY is_read ASC, created_at DESC",
+                (status_filter,)
+            )
+        else:
+            cur.execute(
+                "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
+                "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
+                "ORDER BY is_read ASC, created_at DESC"
+            )
     
     rows = cur.fetchall()
     messages = []
