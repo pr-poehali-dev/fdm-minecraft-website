@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import History from "./pages/History";
 import Clans from "./pages/Clans";
+import GalleryAdmin from "./pages/GalleryAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery-admin" element={<GalleryAdmin />} />
           <Route path="/history" element={<History />} />
           <Route path="/clans" element={<Clans />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
