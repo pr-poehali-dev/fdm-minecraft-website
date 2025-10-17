@@ -147,10 +147,10 @@ const History = () => {
 
       <div className="container mx-auto px-4 py-12 space-y-12 relative z-10">
         <header className="text-center space-y-4 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Наша История
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent minecraft-text">
+            📖 Наша История ⚔️
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto minecraft-text">
             Легендарные игроки, которые создали историю сервера Freedom и оставили неизгладимый след в памяти тысяч игроков
           </p>
         </header>
@@ -165,7 +165,7 @@ const History = () => {
                 opacity: visiblePlayers.has(index) ? 1 : 0,
               }}
             >
-              <Card className={`bg-gradient-to-br ${player.color} border-0 p-6 shadow-2xl hover:scale-105 transition-all duration-300 h-full`}>
+              <Card className={`bg-gradient-to-br ${player.color} border-0 p-6 shadow-2xl hover:scale-105 transition-all duration-300 h-full minecraft-card`}>
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">

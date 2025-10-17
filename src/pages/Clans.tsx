@@ -138,12 +138,12 @@ const Clans = () => {
         <header className="text-center space-y-4 animate-fade-in">
           <div className="flex justify-center items-center gap-3 mb-4">
             <Icon name="Shield" size={48} className="text-primary" />
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Кланы Freedom
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent minecraft-text">
+              🛡️ Кланы Freedom ⚔️
             </h1>
             <Icon name="Swords" size={48} className="text-accent" />
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto minecraft-text">
             Легендарные объединения игроков, которые оставили свой след в истории сервера
           </p>
         </header>
@@ -152,7 +152,7 @@ const Clans = () => {
           {clans.map((clan, index) => (
             <Card
               key={index}
-              className={`relative overflow-hidden border-2 transition-all duration-500 ${
+              className={`relative overflow-hidden border-2 transition-all duration-500 minecraft-card ${
                 hoveredClan === index 
                   ? 'scale-105 shadow-2xl border-primary' 
                   : 'border-border/50 hover:border-primary/50'

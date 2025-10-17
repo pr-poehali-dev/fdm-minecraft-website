@@ -194,7 +194,7 @@ const Index = () => {
             <Button 
               variant="ghost"
               onClick={() => navigate("/gallery")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors minecraft-button"
             >
               <Icon name="Image" size={18} className="mr-2" />
               Галерея
@@ -202,7 +202,7 @@ const Index = () => {
             <Button 
               variant="ghost"
               onClick={() => navigate("/history")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors minecraft-button"
             >
               <Icon name="BookOpen" size={18} className="mr-2" />
               Наша История
@@ -210,7 +210,7 @@ const Index = () => {
             <Button 
               variant="ghost"
               onClick={() => navigate("/clans")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors minecraft-button"
             >
               <Icon name="Shield" size={18} className="mr-2" />
               Кланы
@@ -220,9 +220,9 @@ const Index = () => {
               target="_blank" 
               rel="noopener noreferrer"
             >
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button">
                 <Icon name="ShoppingCart" size={18} className="mr-2" />
-                Магазин
+                🛍️ Магазин
               </Button>
             </a>
           </div>
@@ -233,16 +233,16 @@ const Index = () => {
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <img 
-              src="https://media.discordapp.net/attachments/1062756965824086066/1414679374459965480/2024-12-30_14.02.14.png?ex=68ec9c96&is=68eb4b16&hm=3a3786bc261618dcb4eb119672440336ed4450bedf93b0999189907566ae5267&=&format=webp&quality=lossless&width=1521&height=856" 
+              src="https://cdn.poehali.dev/projects/d9e40634-1ac4-4819-ae4f-92f69037068d/files/8af94fe3-84b3-4c59-823d-beeb090d2ffc.jpg" 
               alt="Freedom Server" 
-              className="w-full max-w-3xl rounded-lg shadow-2xl border-2 border-primary/30"
+              className="w-full max-w-3xl rounded-lg shadow-2xl border-4 border-primary/40 minecraft-card"
               style={{animation: "float 3s ease-in-out infinite"}}
             />
           </div>
           
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow">
-              Freedom
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow minecraft-text">
+              ⛏️ Freedom ⚔️
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">
               Гриферский сервер • Версия 1.20.1
@@ -328,10 +328,10 @@ const Index = () => {
               <Button
                 onClick={copyIP}
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button"
               >
                 <Icon name="Copy" size={20} className="mr-2" />
-                Копировать
+                📋 Копировать
               </Button>
             </div>
           </Card>

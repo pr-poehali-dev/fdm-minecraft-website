@@ -76,10 +76,10 @@ export default function Gallery() {
 
       <div className="container mx-auto px-4 py-12 space-y-12 relative z-10">
         <header className="text-center space-y-4 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Фотогалерея
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent minecraft-text">
+            📸 Фотогалерея 🖼️
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground minecraft-text">
             Лучшие моменты с сервера Freedom
           </p>
         </header>
@@ -98,7 +98,7 @@ export default function Gallery() {
             {photos.map((photo) => (
               <Card 
                 key={photo.id}
-                className="group overflow-hidden bg-card/80 backdrop-blur-sm border-2 border-primary/30 hover:border-primary/60 transition-all cursor-pointer shadow-lg hover:shadow-primary/20"
+                className="group overflow-hidden bg-card/80 backdrop-blur-sm border-2 border-primary/30 hover:border-primary/60 transition-all cursor-pointer shadow-lg hover:shadow-primary/20 minecraft-card"
                 onClick={() => setSelectedImage(photo.image_url)}
               >
                 <div className="relative overflow-hidden">
