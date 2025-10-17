@@ -246,6 +246,14 @@ const Index = () => {
               <Icon name="Shield" size={18} className="mr-2" />
               Кланы
             </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => navigate("/forum")}
+              className="text-foreground hover:text-primary transition-colors minecraft-button"
+            >
+              <Icon name="MessageSquare" size={18} className="mr-2" />
+              Форум
+            </Button>
             <a 
               href="https://fdm.trademc.org/" 
               target="_blank" 

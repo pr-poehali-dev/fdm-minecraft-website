@@ -182,4 +182,24 @@
   .minecraft-text {
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
   }
+
+  .minecraft-input {
+    image-rendering: pixelated;
+    box-shadow:
+      inset 2px 2px 0px rgba(0, 0, 0, 0.5),
+      inset -2px -2px 0px rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  }
+
+  .minecraft-input:focus {
+    box-shadow:
+      inset 2px 2px 0px rgba(0, 0, 0, 0.6),
+      inset -2px -2px 0px rgba(255, 255, 255, 0.2),
+      0 0 0 2px rgba(142, 255, 142, 0.3);
+  }
 }

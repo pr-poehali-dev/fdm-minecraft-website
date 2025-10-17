@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import History from "./pages/History";
 import Clans from "./pages/Clans";
+import Forum from "./pages/Forum";
 import GalleryAdmin from "./pages/GalleryAdmin";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/gallery-admin" element={<GalleryAdmin />} />
           <Route path="/history" element={<History />} />
           <Route path="/clans" element={<Clans />} />
+          <Route path="/forum" element={<Forum />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
