@@ -249,25 +249,14 @@ const Index = () => {
             </p>
           </div>
 
-          <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/20 via-red-500/20 to-purple-500/20 backdrop-blur-sm border-2 border-orange-500/50 p-6 md:p-8 max-w-2xl mx-auto shadow-2xl hover:shadow-orange-500/30 transition-all">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgMCBNIC0xMCA1MCBMIDUwIC0xMCBNIDI1IDUwIEwgNTAgMjUiIHN0cm9rZT0icmdiYSgyNTUsMTY1LDAsMC4xKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50"></div>
-            <div className="relative z-10 space-y-3 md:space-y-4">
-              <div className="flex justify-center mb-1 md:mb-2">
-                <Icon name="Zap" size={36} className="md:hidden text-orange-500 animate-pulse" />
-                <Icon name="Zap" size={48} className="hidden md:block text-orange-500 animate-pulse" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-center leading-tight">
-                <span className="block bg-gradient-to-r from-orange-400 via-red-400 to-purple-400 bg-clip-text text-transparent drop-shadow-lg mb-1 md:mb-0" style={{textShadow: "0 0 30px rgba(255,165,0,0.3)"}}>
-                  Импровизируй
-                </span>
-                <span className="block bg-gradient-to-r from-red-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg mb-1 md:mb-0" style={{textShadow: "0 0 30px rgba(255,0,100,0.3)"}}>
-                  Адаптируйся
-                </span>
-                <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent drop-shadow-lg" style={{textShadow: "0 0 30px rgba(150,0,255,0.3)"}}>
-                  Преодолевай
+          <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/15 via-red-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-orange-500/40 py-4 px-3 md:p-8 max-w-2xl mx-auto shadow-xl">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgMCBNIC0xMCA1MCBMIDUwIC0xMCBNIDI1IDUwIEwgNTAgMjUiIHN0cm9rZT0icmdiYSgyNTUsMTY1LDAsMC4wNSkiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
+            <div className="relative z-10">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-center leading-relaxed md:leading-tight">
+                <span className="bg-gradient-to-r from-orange-400 via-red-400 to-purple-400 bg-clip-text text-transparent">
+                  Импровизируй. Адаптируйся. Преодолевай
                 </span>
               </h2>
-              <div className="h-1 w-24 md:w-32 mx-auto bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 rounded-full"></div>
             </div>
           </Card>
 
