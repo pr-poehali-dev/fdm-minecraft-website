@@ -175,17 +175,6 @@ const Clans = () => {
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold text-foreground mb-1">{clan.name}</h2>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          clan.status === "Активен" 
-                            ? "bg-green-500/20 text-green-500 border border-green-500/30" 
-                            : clan.status === "Объединён"
-                            ? "bg-blue-500/20 text-blue-500 border border-blue-500/30"
-                            : "bg-gray-500/20 text-gray-500 border border-gray-500/30"
-                        }`}>
-                          {clan.status}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
