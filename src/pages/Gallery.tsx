@@ -60,14 +60,6 @@ export default function Gallery() {
               <Icon name="Home" size={18} className="mr-2" />
               Главная
             </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/login")}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              <Icon name="Lock" size={18} className="mr-2" />
-              Админ
-            </Button>
             <a 
               href="https://fdm.trademc.org/" 
               target="_blank" 
