@@ -254,6 +254,14 @@ const Index = () => {
               <Icon name="MessageSquare" size={18} className="mr-2" />
               Форум
             </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => navigate("/forum-admin")}
+              className="text-orange-400 hover:text-orange-300 transition-colors minecraft-button"
+            >
+              <Icon name="Shield" size={18} className="mr-2" />
+              Админка
+            </Button>
             <a 
               href="https://fdm.trademc.org/" 
               target="_blank" 

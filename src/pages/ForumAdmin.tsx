@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -20,10 +21,57 @@ interface ForumMessage {
 const ForumAdmin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [messages, setMessages] = useState<ForumMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [replyText, setReplyText] = useState<{ [key: number]: string }>({});
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
+
+  useEffect(() => {
+    const savedAuth = sessionStorage.getItem('forum_admin_auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+
+    setTimeout(() => {
+      if (username === 'Lyntik7884' && password === '101010lola') {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('forum_admin_auth', 'true');
+        toast({
+          title: "✅ Вход выполнен",
+          description: "Добро пожаловать в админ-панель!",
+        });
+      } else {
+        toast({
+          title: "❌ Ошибка входа",
+          description: "Неверный логин или пароль",
+          variant: "destructive",
+        });
+      }
+      setIsLoggingIn(false);
+    }, 500);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('forum_admin_auth');
+    setUsername("");
+    setPassword("");
+    toast({
+      title: "👋 Выход выполнен",
+      description: "До встречи!",
+    });
+  };
 
   const fetchMessages = async () => {
     try {
@@ -42,8 +90,10 @@ const ForumAdmin = () => {
   };
 
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    if (isAuthenticated) {
+      fetchMessages();
+    }
+  }, [isAuthenticated]);
 
   const handleReply = async (messageId: number) => {
     const reply = replyText[messageId]?.trim();
@@ -126,6 +176,16 @@ const ForumAdmin = () => {
             Freedom
           </h1>
           <div className="flex gap-4">
+            {isAuthenticated && (
+              <Button 
+                variant="ghost"
+                onClick={handleLogout}
+                className="text-red-400 hover:text-red-300 transition-colors"
+              >
+                <Icon name="LogOut" size={18} className="mr-2" />
+                Выйти
+              </Button>
+            )}
             <Button 
               variant="ghost"
               onClick={() => navigate("/forum")}
@@ -147,20 +207,103 @@ const ForumAdmin = () => {
       </nav>
 
       <div className="container mx-auto px-4 py-12 relative z-10 max-w-6xl">
-        <div className="space-y-8 animate-fade-in">
-          <div className="text-center space-y-4">
-            <div className="inline-block p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40 minecraft-card">
-              <Icon name="Shield" size={48} className="text-orange-400" />
+        {!isAuthenticated ? (
+          <div className="space-y-8 animate-fade-in max-w-md mx-auto">
+            <div className="text-center space-y-4">
+              <div className="inline-block p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40 minecraft-card">
+                <Icon name="Lock" size={48} className="text-orange-400" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 bg-clip-text text-transparent minecraft-text">
+                🔐 Вход в админ-панель
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Введите логин и пароль для доступа
+              </p>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 bg-clip-text text-transparent minecraft-text">
-              🛡️ Админ-панель форума
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              Управление сообщениями и ответы игрокам
-            </p>
-          </div>
 
-          {isLoading ? (
+            <Card className="bg-gradient-to-br from-orange-500/10 via-red-500/10 to-orange-500/10 border-2 border-orange-500/30 p-8 shadow-2xl minecraft-card">
+              <form onSubmit={handleLogin} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <Icon name="User" size={16} className="text-orange-400" />
+                    Логин
+                  </label>
+                  <Input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Введите логин"
+                    className="bg-background/50 border-orange-500/30 focus:border-orange-500 transition-all minecraft-input text-lg"
+                    disabled={isLoggingIn}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <Icon name="KeyRound" size={16} className="text-orange-400" />
+                    Пароль
+                  </label>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Введите пароль"
+                    className="bg-background/50 border-orange-500/30 focus:border-orange-500 transition-all minecraft-input text-lg"
+                    disabled={isLoggingIn}
+                    required
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-6 text-lg shadow-lg hover:shadow-orange-500/50 transition-all minecraft-button"
+                  disabled={isLoggingIn}
+                >
+                  {isLoggingIn ? (
+                    <>
+                      <Icon name="Loader2" size={20} className="mr-2 animate-spin" />
+                      Вход...
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="LogIn" size={20} className="mr-2" />
+                      🔓 Войти
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 p-6 minecraft-card">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-500/20 rounded border border-blue-500/40">
+                  <Icon name="Info" size={20} className="text-blue-400" />
+                </div>
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-bold text-lg text-foreground">🛡️ Безопасность</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Доступ к админ-панели защищён. Только администраторы сервера могут управлять сообщениями форума.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        ) : (
+          <div className="space-y-8 animate-fade-in">
+            <div className="text-center space-y-4">
+              <div className="inline-block p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40 minecraft-card">
+                <Icon name="Shield" size={48} className="text-orange-400" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 bg-clip-text text-transparent minecraft-text">
+                🛡️ Админ-панель форума
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Управление сообщениями и ответы игрокам
+              </p>
+            </div>
+
+            {isLoading ? (
             <div className="text-center py-12">
               <Icon name="Loader2" size={48} className="animate-spin mx-auto text-primary" />
               <p className="mt-4 text-muted-foreground">Загрузка сообщений...</p>
@@ -247,6 +390,7 @@ const ForumAdmin = () => {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
