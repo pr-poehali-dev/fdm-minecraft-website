@@ -16,6 +16,7 @@ interface ForumMessage {
   admin_reply: string | null;
   replied_at: string | null;
   email_sent: boolean;
+  is_read: boolean;
 }
 
 const ForumAdmin = () => {
@@ -150,6 +151,37 @@ const ForumAdmin = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const toggleReadStatus = async (messageId: number, currentStatus: boolean) => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message_id: messageId,
+          is_read: !currentStatus
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: !currentStatus ? "✅ Отмечено прочитанным" : "📬 Отмечено непрочитанным",
+          description: "Статус сообщения обновлён",
+        });
+        fetchMessages();
+      } else {
+        throw new Error('Failed to toggle');
+      }
+    } catch (error) {
+      toast({
+        title: "❌ Ошибка",
+        description: "Не удалось обновить статус",
+        variant: "destructive",
+      });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -301,6 +333,20 @@ const ForumAdmin = () => {
               <p className="text-muted-foreground text-lg">
                 Управление сообщениями и ответы игрокам
               </p>
+              {messages.length > 0 && (
+                <div className="flex gap-4 justify-center flex-wrap mt-4">
+                  <div className="px-4 py-2 bg-blue-500/20 border-2 border-blue-500/40 rounded-lg">
+                    <span className="text-sm font-bold text-blue-400">
+                      📬 Непрочитанных: {messages.filter(m => !m.is_read).length}
+                    </span>
+                  </div>
+                  <div className="px-4 py-2 bg-green-500/20 border-2 border-green-500/40 rounded-lg">
+                    <span className="text-sm font-bold text-green-400">
+                      ✅ Всего: {messages.length}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {isLoading ? (
@@ -317,14 +363,43 @@ const ForumAdmin = () => {
           ) : (
             <div className="space-y-6">
               {messages.map((msg) => (
-                <Card key={msg.id} className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 border-2 border-purple-500/30 p-6 minecraft-card">
+                <Card 
+                  key={msg.id} 
+                  className={`bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 border-2 p-6 minecraft-card transition-all ${
+                    !msg.is_read 
+                      ? 'border-blue-500/60 shadow-lg shadow-blue-500/20' 
+                      : 'border-purple-500/30'
+                  }`}
+                >
                   <div className="space-y-4">
                     <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex items-center gap-3 flex-wrap">
                           <Icon name="User" size={20} className="text-purple-400" />
                           <span className="font-bold text-lg">{msg.nickname}</span>
                           {getStatusBadge(msg.status)}
+                          <Button
+                            onClick={() => toggleReadStatus(msg.id, msg.is_read)}
+                            size="sm"
+                            variant="ghost"
+                            className={`ml-2 text-xs ${
+                              msg.is_read 
+                                ? 'bg-gray-500/20 text-gray-400 hover:bg-gray-500/30' 
+                                : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/40'
+                            }`}
+                          >
+                            {msg.is_read ? (
+                              <>
+                                <Icon name="CheckCheck" size={14} className="mr-1" />
+                                Прочитано
+                              </>
+                            ) : (
+                              <>
+                                <Icon name="Mail" size={14} className="mr-1" />
+                                Непрочитано
+                              </>
+                            )}
+                          </Button>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Icon name="Clock" size={14} />

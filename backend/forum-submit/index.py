@@ -19,7 +19,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
@@ -32,6 +32,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         return submit_message(event)
     elif method == 'PUT':
         return reply_to_message(event)
+    elif method == 'PATCH':
+        return toggle_read_status(event)
     else:
         return {
             'statusCode': 405,
@@ -49,16 +51,16 @@ def get_messages(event: Dict[str, Any]) -> Dict[str, Any]:
     
     if status_filter:
         cur.execute(
-            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent "
+            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
             "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
-            "WHERE status = %s ORDER BY created_at DESC",
+            "WHERE status = %s ORDER BY is_read ASC, created_at DESC",
             (status_filter,)
         )
     else:
         cur.execute(
-            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent "
+            "SELECT id, nickname, message, created_at, status, admin_reply, replied_at, email_sent, is_read "
             "FROM t_p55599668_fdm_minecraft_websit.forum_messages "
-            "ORDER BY created_at DESC"
+            "ORDER BY is_read ASC, created_at DESC"
         )
     
     rows = cur.fetchall()
@@ -73,7 +75,8 @@ def get_messages(event: Dict[str, Any]) -> Dict[str, Any]:
             'status': row[4],
             'admin_reply': row[5],
             'replied_at': row[6].isoformat() if row[6] else None,
-            'email_sent': row[7]
+            'email_sent': row[7],
+            'is_read': row[8] if row[8] is not None else False
         })
     
     cur.close()
@@ -126,6 +129,47 @@ def reply_to_message(event: Dict[str, Any]) -> Dict[str, Any]:
         'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         'isBase64Encoded': False,
         'body': json.dumps({'success': True})
+    }
+
+def toggle_read_status(event: Dict[str, Any]) -> Dict[str, Any]:
+    body_data = json.loads(event.get('body', '{}'))
+    message_id = body_data.get('message_id')
+    is_read = body_data.get('is_read')
+    
+    if message_id is None or is_read is None:
+        return {
+            'statusCode': 400,
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+            'body': json.dumps({'error': 'message_id and is_read are required'})
+        }
+    
+    db_url = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(db_url)
+    cur = conn.cursor()
+    
+    cur.execute(
+        "UPDATE t_p55599668_fdm_minecraft_websit.forum_messages "
+        "SET is_read = %s WHERE id = %s",
+        (is_read, message_id)
+    )
+    
+    if cur.rowcount == 0:
+        conn.close()
+        return {
+            'statusCode': 404,
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+            'body': json.dumps({'error': 'Message not found'})
+        }
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    return {
+        'statusCode': 200,
+        'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+        'isBase64Encoded': False,
+        'body': json.dumps({'success': True, 'is_read': is_read})
     }
 
 def submit_message(event: Dict[str, Any]) -> Dict[str, Any]:
