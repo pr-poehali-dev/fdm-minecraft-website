@@ -19,6 +19,11 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [onlineHistory, setOnlineHistory] = useState<Array<{time: string, players: number}>>([]);
   const onlinePercentage = (onlinePlayers / maxPlayers) * 100;
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,6 +43,58 @@ const Index = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const fetchServerStatus = async () => {
     setIsLoading(true);
@@ -514,6 +571,27 @@ const Index = () => {
           </p>
         </footer>
       </div>
+
+      {showScrollTop && (
+        <Button
+          onClick={scrollToTop}
+          size="icon"
+          className="fixed bottom-6 right-6 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-50 transition-all hover:scale-110"
+          aria-label="Наверх"
+        >
+          <Icon name="ArrowUp" size={24} />
+        </Button>
+      )}
+
+      <Button
+        onClick={toggleTheme}
+        size="icon"
+        variant="outline"
+        className="fixed top-6 right-6 rounded-full shadow-lg z-50 transition-all hover:scale-110 bg-background/80 backdrop-blur-sm"
+        aria-label="Переключить тему"
+      >
+        <Icon name={isDarkMode ? "Sun" : "Moon"} size={20} />
+      </Button>
     </div>
   );
 };
