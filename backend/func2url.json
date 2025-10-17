@@ -1,7 +1,5 @@
 {
-  "telegram-auth": "https://functions.poehali.dev/1de901ae-f25c-4c6f-8148-f992954a8a15",
-  "security-alert": "https://functions.poehali.dev/19256088-ef1f-4ba3-8d21-d90762865a63",
-  "login-history": "https://functions.poehali.dev/0c4c5b9d-0281-482d-9c0a-66ae15c5a2fd",
-  "auth": "https://functions.poehali.dev/cb189d68-b747-493c-b6b9-5a939f355c3d",
+  "gallery-seed": "https://functions.poehali.dev/b5814e0c-80ec-41ea-81e6-2818d4471b98",
+  "minecraft-ai": "https://functions.poehali.dev/6085a04a-e3f8-4157-b321-3b15d66887c7",
   "gallery": "https://functions.poehali.dev/96ce21ed-e22a-41d3-a430-bb779560e271"
 }
