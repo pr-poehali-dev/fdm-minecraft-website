@@ -5,9 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Gallery from "./pages/Gallery";
-import History from "./pages/History";
-import Clans from "./pages/Clans";
+import About from "./pages/About";
 import Forum from "./pages/Forum";
 import ForumAdmin from "./pages/ForumAdmin";
 import GalleryAdmin from "./pages/GalleryAdmin";
@@ -15,7 +13,8 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -23,10 +22,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About />} />
           <Route path="/gallery-admin" element={<GalleryAdmin />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/clans" element={<Clans />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/forum-admin" element={<ForumAdmin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
@@ -35,6 +32,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

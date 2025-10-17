@@ -224,27 +224,11 @@ const Index = () => {
           <div className="flex gap-4">
             <Button 
               variant="ghost"
-              onClick={() => navigate("/gallery")}
-              className="text-foreground hover:text-primary transition-colors minecraft-button"
-            >
-              <Icon name="Image" size={18} className="mr-2" />
-              Галерея
-            </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/history")}
+              onClick={() => navigate("/about")}
               className="text-foreground hover:text-primary transition-colors minecraft-button"
             >
               <Icon name="BookOpen" size={18} className="mr-2" />
-              Наша История
-            </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/clans")}
-              className="text-foreground hover:text-primary transition-colors minecraft-button"
-            >
-              <Icon name="Shield" size={18} className="mr-2" />
-              Кланы
+              О сервере
             </Button>
             <Button 
               variant="ghost"
