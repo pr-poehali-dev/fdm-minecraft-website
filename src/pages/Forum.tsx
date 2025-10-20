@@ -144,9 +144,9 @@ const Forum = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImJsb2NrIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjYmxvY2spIi8+PC9zdmc+')] opacity-40"></div>
       
       <nav className="relative z-20 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
           <h1 
-            className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
+            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
             onClick={() => navigate("/")}
           >
             Freedom
@@ -154,29 +154,29 @@ const Forum = () => {
           <Button 
             variant="ghost"
             onClick={() => navigate("/")}
-            className="text-foreground hover:text-primary transition-colors"
+            className="text-foreground hover:text-primary transition-colors text-sm md:text-base"
           >
-            <Icon name="Home" size={18} className="mr-2" />
+            <Icon name="Home" size={16} className="mr-1 md:mr-2" />
             На главную
           </Button>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-12 relative z-10 max-w-4xl">
-        <div className="space-y-8 animate-fade-in">
-          <div className="text-center space-y-4">
-            <div className="inline-block p-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border-2 border-green-500/40 minecraft-card">
-              <Icon name="MessageSquare" size={48} className="text-green-400" />
+      <div className="container mx-auto px-4 py-6 md:py-12 relative z-10 max-w-4xl">
+        <div className="space-y-6 md:space-y-8 animate-fade-in">
+          <div className="text-center space-y-3 md:space-y-4">
+            <div className="inline-block p-3 md:p-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border-2 border-green-500/40 minecraft-card">
+              <Icon name="MessageSquare" size={36} className="text-green-400 md:w-12 md:h-12" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent minecraft-text">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent minecraft-text px-2">
               📜 Форум обратной связи
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg px-4">
               Поделись своим мнением, предложением или вопросом
             </p>
           </div>
 
-          <Card className="bg-gradient-to-br from-green-500/10 via-emerald-500/10 to-green-500/10 border-2 border-green-500/30 p-8 shadow-2xl minecraft-card">
+          <Card className="bg-gradient-to-br from-green-500/10 via-emerald-500/10 to-green-500/10 border-2 border-green-500/30 p-4 sm:p-6 md:p-8 shadow-2xl minecraft-card">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-foreground flex items-center gap-2">
@@ -213,7 +213,7 @@ const Forum = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-6 text-lg shadow-lg hover:shadow-green-500/50 transition-all minecraft-button"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-4 md:py-6 text-base md:text-lg shadow-lg hover:shadow-green-500/50 transition-all minecraft-button"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -231,15 +231,15 @@ const Forum = () => {
             </form>
           </Card>
 
-          <Card className="bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-blue-500/10 border-2 border-blue-500/30 p-6 minecraft-card">
+          <Card className="bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-blue-500/10 border-2 border-blue-500/30 p-4 md:p-6 minecraft-card">
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-blue-500/20 rounded border border-blue-500/40">
                   <Icon name="Info" size={20} className="text-blue-400" />
                 </div>
                 <div className="space-y-2 flex-1">
-                  <h3 className="font-bold text-lg text-foreground">📋 Правила форума</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
+                  <h3 className="font-bold text-base md:text-lg text-foreground">📋 Правила форума</h3>
+                  <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400 mt-0.5">⚔️</span>
                       <span>Будь вежлив и уважителен к другим игрокам</span>
@@ -262,37 +262,37 @@ const Forum = () => {
             </div>
           </Card>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 p-6 text-center minecraft-card hover:scale-105 transition-transform">
-              <Icon name="Lightbulb" size={32} className="mx-auto mb-3 text-purple-400" />
-              <h3 className="font-bold text-lg mb-2">💡 Предложения</h3>
-              <p className="text-sm text-muted-foreground">Делись идеями по улучшению сервера</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+            <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 p-4 md:p-6 text-center minecraft-card md:hover:scale-105 transition-transform">
+              <Icon name="Lightbulb" size={28} className="mx-auto mb-2 md:mb-3 text-purple-400" />
+              <h3 className="font-bold text-base md:text-lg mb-1 md:mb-2">💡 Предложения</h3>
+              <p className="text-xs md:text-sm text-muted-foreground">Делись идеями по улучшению сервера</p>
             </Card>
 
-            <Card className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/30 p-6 text-center minecraft-card hover:scale-105 transition-transform">
-              <Icon name="Bug" size={32} className="mx-auto mb-3 text-red-400" />
-              <h3 className="font-bold text-lg mb-2">🐛 Баги</h3>
-              <p className="text-sm text-muted-foreground">Сообщай об ошибках и глюках</p>
+            <Card className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/30 p-4 md:p-6 text-center minecraft-card md:hover:scale-105 transition-transform">
+              <Icon name="Bug" size={28} className="mx-auto mb-2 md:mb-3 text-red-400" />
+              <h3 className="font-bold text-base md:text-lg mb-1 md:mb-2">🐛 Баги</h3>
+              <p className="text-xs md:text-sm text-muted-foreground">Сообщай об ошибках и глюках</p>
             </Card>
 
-            <Card className="bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border-2 border-yellow-500/30 p-6 text-center minecraft-card hover:scale-105 transition-transform">
-              <Icon name="Star" size={32} className="mx-auto mb-3 text-yellow-400" />
-              <h3 className="font-bold text-lg mb-2">⭐ Отзывы</h3>
-              <p className="text-sm text-muted-foreground">Расскажи о своём опыте игры</p>
+            <Card className="bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border-2 border-yellow-500/30 p-4 md:p-6 text-center minecraft-card md:hover:scale-105 transition-transform">
+              <Icon name="Star" size={28} className="mx-auto mb-2 md:mb-3 text-yellow-400" />
+              <h3 className="font-bold text-base md:text-lg mb-1 md:mb-2">⭐ Отзывы</h3>
+              <p className="text-xs md:text-sm text-muted-foreground">Расскажи о своём опыте игры</p>
             </Card>
           </div>
 
           {(answeredMessages.length > 0 || localStorage.getItem('forumNickname')) && (
-            <div className="space-y-6">
-              <div className="text-center space-y-4">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent minecraft-text">
+            <div className="space-y-4 md:space-y-6">
+              <div className="text-center space-y-3 md:space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent minecraft-text">
                   💬 Твои сообщения и ответы
                 </h2>
-                <p className="text-muted-foreground">Здесь показаны только твои сообщения с ответами администрации</p>
+                <p className="text-muted-foreground text-sm md:text-base px-4">Здесь показаны только твои сообщения с ответами администрации</p>
                 <Button
                   onClick={refreshAnswers}
                   disabled={isRefreshing}
-                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold minecraft-button"
+                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold minecraft-button text-sm md:text-base"
                 >
                   {isRefreshing ? (
                     <>
@@ -309,10 +309,10 @@ const Forum = () => {
               </div>
 
               {answeredMessages.length === 0 ? (
-                <Card className="bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-purple-500/10 border-2 border-purple-500/30 p-8 text-center minecraft-card">
-                  <Icon name="MessageCircle" size={48} className="mx-auto mb-4 text-purple-400" />
-                  <h3 className="text-xl font-bold mb-2">⏳ Ожидаем ответа</h3>
-                  <p className="text-muted-foreground">
+                <Card className="bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-purple-500/10 border-2 border-purple-500/30 p-6 md:p-8 text-center minecraft-card">
+                  <Icon name="MessageCircle" size={40} className="mx-auto mb-3 md:mb-4 text-purple-400" />
+                  <h3 className="text-lg md:text-xl font-bold mb-2">⏳ Ожидаем ответа</h3>
+                  <p className="text-muted-foreground text-sm md:text-base">
                     Администрация ещё не ответила на твои сообщения.<br />
                     Нажми "Обновить ответы" чтобы проверить наличие новых ответов.
                   </p>
@@ -320,7 +320,7 @@ const Forum = () => {
               ) : (
                 answeredMessages.map((msg) => {
                   return (
-                    <Card key={msg.id} className="bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-500/10 border-2 border-cyan-500/30 p-6 minecraft-card">
+                    <Card key={msg.id} className="bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-500/10 border-2 border-cyan-500/30 p-4 md:p-6 minecraft-card">
                       <div className="space-y-4">
                         <div className="flex justify-between items-start flex-wrap gap-4">
                           <div className="space-y-1">

@@ -13,6 +13,7 @@ const Index = () => {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const [onlinePlayers, setOnlinePlayers] = useState(0);
   const [maxPlayers, setMaxPlayers] = useState(128);
@@ -217,50 +218,100 @@ const Index = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
       
       <nav className="relative z-20 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Freedom
-          </h1>
-          <div className="flex gap-4">
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/about")}
-              className="text-foreground hover:text-primary transition-colors minecraft-button"
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Freedom
+            </h1>
+            
+            <button 
+              className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Icon name="BookOpen" size={18} className="mr-2" />
-              О сервере
-            </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/forum")}
-              className="text-foreground hover:text-primary transition-colors minecraft-button"
-            >
-              <Icon name="MessageSquare" size={18} className="mr-2" />
-              Форум
-            </Button>
-            <Button 
-              variant="ghost"
-              onClick={() => navigate("/forum-admin")}
-              className="text-orange-400 hover:text-orange-300 transition-colors minecraft-button"
-            >
-              <Icon name="Shield" size={18} className="mr-2" />
-              Админка
-            </Button>
-            <a 
-              href="https://fdm.trademc.org/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button">
-                <Icon name="ShoppingCart" size={18} className="mr-2" />
-                🛍️ Магазин
+              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} className="text-foreground" />
+            </button>
+            
+            <div className="hidden md:flex gap-2 lg:gap-4">
+              <Button 
+                variant="ghost"
+                onClick={() => navigate("/about")}
+                className="text-foreground hover:text-primary transition-colors minecraft-button text-sm lg:text-base"
+              >
+                <Icon name="BookOpen" size={16} className="mr-1 lg:mr-2" />
+                О сервере
               </Button>
-            </a>
+              <Button 
+                variant="ghost"
+                onClick={() => navigate("/forum")}
+                className="text-foreground hover:text-primary transition-colors minecraft-button text-sm lg:text-base"
+              >
+                <Icon name="MessageSquare" size={16} className="mr-1 lg:mr-2" />
+                Форум
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={() => navigate("/forum-admin")}
+                className="text-orange-400 hover:text-orange-300 transition-colors minecraft-button text-sm lg:text-base"
+              >
+                <Icon name="Shield" size={16} className="mr-1 lg:mr-2" />
+                Админка
+              </Button>
+              <a 
+                href="https://fdm.trademc.org/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button text-sm lg:text-base">
+                  <Icon name="ShoppingCart" size={16} className="mr-1 lg:mr-2" />
+                  🛍️ Магазин
+                </Button>
+              </a>
+            </div>
           </div>
+          
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 space-y-2 pb-2 animate-fade-in">
+              <Button 
+                variant="ghost"
+                onClick={() => { navigate("/about"); setMobileMenuOpen(false); }}
+                className="w-full justify-start text-foreground hover:text-primary transition-colors minecraft-button"
+              >
+                <Icon name="BookOpen" size={18} className="mr-2" />
+                О сервере
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={() => { navigate("/forum"); setMobileMenuOpen(false); }}
+                className="w-full justify-start text-foreground hover:text-primary transition-colors minecraft-button"
+              >
+                <Icon name="MessageSquare" size={18} className="mr-2" />
+                Форум
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={() => { navigate("/forum-admin"); setMobileMenuOpen(false); }}
+                className="w-full justify-start text-orange-400 hover:text-orange-300 transition-colors minecraft-button"
+              >
+                <Icon name="Shield" size={18} className="mr-2" />
+                Админка
+              </Button>
+              <a 
+                href="https://fdm.trademc.org/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <Button className="w-full justify-start bg-primary hover:bg-primary/90 text-primary-foreground minecraft-button">
+                  <Icon name="ShoppingCart" size={18} className="mr-2" />
+                  🛍️ Магазин
+                </Button>
+              </a>
+            </div>
+          )}
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-12 space-y-16 relative z-10">
+      <div className="container mx-auto px-4 py-6 md:py-12 space-y-8 md:space-y-16 relative z-10">
         <header className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <img 
@@ -272,18 +323,18 @@ const Index = () => {
           </div>
           
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow minecraft-text">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow minecraft-text">
               ⛏️ Freedom ⚔️
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground">
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
               Гриферский сервер • Версия 1.20.1
             </p>
           </div>
 
-          <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/15 via-red-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-orange-500/40 py-4 px-3 md:p-8 max-w-2xl mx-auto shadow-xl">
+          <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/15 via-red-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-orange-500/40 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto shadow-xl">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgMCBNIC0xMCA1MCBMIDUwIC0xMCBNIDI1IDUwIEwgNTAgMjUiIHN0cm9rZT0icmdiYSgyNTUsMTY1LDAsMC4wNSkiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
             <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-center leading-relaxed md:leading-tight">
+              <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-black text-center leading-snug md:leading-tight">
                 <span className="bg-gradient-to-r from-orange-400 via-red-400 to-purple-400 bg-clip-text text-transparent">
                   Импровизируй. Адаптируйся. Преодолевай
                 </span>
@@ -291,13 +342,13 @@ const Index = () => {
             </div>
           </Card>
 
-          <Card className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm border-2 border-primary/40 p-8 max-w-4xl mx-auto shadow-2xl hover:shadow-primary/30 transition-all">
+          <Card className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm border-2 border-primary/40 p-4 sm:p-6 md:p-8 max-w-4xl mx-auto shadow-2xl hover:shadow-primary/30 transition-all">
             <div className="space-y-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Народ, все чухня. Играйте на лучшем Minecraft-сервере мира (но это не точно) Freedom!
               </h2>
               
-              <p className="text-base md:text-lg text-center text-muted-foreground">
+              <p className="text-sm sm:text-base md:text-lg text-center text-muted-foreground">
                 Это самый амбициозный Minecraft-проект за все время (админа), который затрагивает буквально каждый аспект игры (и вашей жизни):
               </p>
 
