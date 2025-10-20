@@ -27,75 +27,51 @@ const About = () => {
   const clans = [
     {
       name: "Красный Рассвет",
+      tag: "[КР]",
       description: "Старейший и крупнейший клан сервера. Основан _GACHI_MAN с первыми участниками Waseee и PRO100DIMA. Пережил множество войн с Terrible Dream, ОЗЗ и Анархистами. После ухода основателя клан возродил lopalopa, создав легендарные базы Союз и Восход. Так же главой был игрок под ником Lyntik7884. Сейчас главой является Hemister_Hunter",
       icon: "Sunrise" as const,
       color: "from-red-600 via-red-500 to-orange-500",
-      bgPattern: "bg-red-950/30",
-      members: 127,
-      level: 45,
-      founded: "2020",
-      leader: "Hemister_Hunter",
-      status: "Активен"
+      bgPattern: "bg-red-950/30"
     },
     {
       name: "Анархисты",
+      tag: "[А]",
       description: "Клан Анархистов, отделившийся от Красного Рассвета, был основан CATAHA и вскоре к нему присоединился _GACHI_MAN. Они построили знаменитую базу Свободу, которую частично загриферил Darkmen, а затем уничтожили сами Анархисты. После потери базы они создали базу Паскуда под командованием MineFaha, но и она была уничтожена. Клан распался после того, как аккаунт GACHI_MAN был взломан, а Сатана раздавал нелегальные вещи",
       icon: "Flame" as const,
       color: "from-gray-800 via-gray-700 to-slate-600",
-      bgPattern: "bg-gray-950/30",
-      members: 64,
-      level: 32,
-      founded: "2021",
-      leader: "Распущен",
-      status: "Неактивен"
+      bgPattern: "bg-gray-950/30"
     },
     {
       name: "Орден Зелёной Звезды",
+      tag: "[ОЗЗ]",
       description: "Fr0o0Zzzy основал \"Орден Зелёной Звезды\", который развился после разрушения баз \"Восход\" и \"Свобода\". Клан объявил войну \"Красному рассвету\", строил базы и мап-арты. После ухода Fr0o0Zzzy, клан пережил кризис, возрождение под руководством denis5556, объединение с \"Красным рассветом\" и, в конечном итоге, упадок",
       icon: "Star" as const,
       color: "from-green-600 via-green-500 to-emerald-500",
-      bgPattern: "bg-green-950/30",
-      members: 76,
-      level: 35,
-      founded: "2021",
-      leader: "denis5556",
-      status: "Объединён"
+      bgPattern: "bg-green-950/30"
     },
     {
       name: "Orthodox",
+      tag: "[Orth]",
       description: "Клан основан владельцем сервера Freeman. Попасть в него очень сложно - принцип отбора неизвестен. Несмотря на кажущуюся мирность, вёл две войны против игроков Гурончика и Синаила, одержав победу в обеих",
       icon: "Crown" as const,
       color: "from-blue-600 via-blue-500 to-cyan-500",
-      bgPattern: "bg-blue-950/30",
-      members: 98,
-      level: 38,
-      founded: "2020",
-      leader: "Freeman",
-      status: "Активен"
+      bgPattern: "bg-blue-950/30"
     },
     {
       name: "Торговая Федерация",
+      tag: "[ТФ]",
       description: "Основана Серена Ямано. Изначально помогала новичкам, но переключилась на торговлю ресурсами. Во время войны между Рассветом и Семгаку Серена продавал информацию о базах обеим сторонам, нажив огромное состояние на конфликте",
       icon: "Coins" as const,
       color: "from-purple-600 via-purple-500 to-indigo-500",
-      bgPattern: "bg-purple-950/30",
-      members: 156,
-      level: 52,
-      founded: "2021",
-      leader: "Серена Ямано",
-      status: "Активен"
+      bgPattern: "bg-purple-950/30"
     },
     {
       name: "Пурпурный Закат",
+      tag: "[ПЗ]",
       description: "Создан sanchopancho, стремившимся к силе Красного Рассвета. Первая база Закат стала легендарной, но угасла. Сайранос возродил клан, построив подземную базу, которую уничтожили. Клан запомнился тем, что воспитал сильных и самостоятельных игроков",
       icon: "Sunset" as const,
       color: "from-purple-600 via-purple-500 to-pink-500",
-      bgPattern: "bg-purple-950/30",
-      members: 89,
-      level: 41,
-      founded: "2022",
-      leader: "Sairanos",
-      status: "Неактивен"
+      bgPattern: "bg-purple-950/30"
     }
   ];
 
@@ -250,49 +226,21 @@ const About = () => {
                   onMouseLeave={() => setHoveredClan(null)}
                 >
                   <div className="space-y-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`p-3 bg-gradient-to-br ${clan.color} rounded-lg`}>
-                          <Icon name={clan.icon} size={32} className="text-white" />
-                        </div>
-                        <div>
-                          <h3 className={`text-2xl font-bold bg-gradient-to-r ${clan.color} bg-clip-text text-transparent`}>
-                            {clan.name}
-                          </h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className={`
-                              text-xs px-2 py-1 rounded-full font-bold
-                              ${clan.status === 'Активен' ? 'bg-green-500/20 text-green-400 border border-green-500/40' : 
-                                clan.status === 'Объединён' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40' : 
-                                'bg-gray-500/20 text-gray-400 border border-gray-500/40'}
-                            `}>
-                              {clan.status}
-                            </span>
-                          </div>
-                        </div>
+                    <div className="flex items-center gap-4">
+                      <div className={`p-3 bg-gradient-to-br ${clan.color} rounded-lg`}>
+                        <Icon name={clan.icon} size={32} className="text-white" />
+                      </div>
+                      <div>
+                        <h3 className={`text-2xl font-bold bg-gradient-to-r ${clan.color} bg-clip-text text-transparent`}>
+                          {clan.name}
+                        </h3>
+                        <span className={`text-sm font-mono bg-gradient-to-r ${clan.color} bg-clip-text text-transparent opacity-80`}>
+                          {clan.tag}
+                        </span>
                       </div>
                     </div>
 
                     <p className="text-sm text-muted-foreground leading-relaxed">{clan.description}</p>
-
-                    <div className="grid grid-cols-2 gap-3 pt-3 border-t border-primary/20">
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">👥 Участников</p>
-                        <p className="text-lg font-bold">{clan.members}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">⭐ Уровень</p>
-                        <p className="text-lg font-bold">{clan.level}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">📅 Основан</p>
-                        <p className="text-lg font-bold">{clan.founded}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">👑 Глава</p>
-                        <p className="text-lg font-bold truncate">{clan.leader}</p>
-                      </div>
-                    </div>
                   </div>
                 </Card>
               ))}
