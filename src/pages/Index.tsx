@@ -538,7 +538,7 @@ const Index = () => {
           <div className="text-center space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-primary">Кланы сервера</h2>
             <Button 
-              onClick={() => navigate("/clans")}
+              onClick={() => navigate("/about")}
               size="lg"
               className="bg-gradient-to-r from-primary to-accent hover:scale-105 transition-all shadow-lg"
             >
