@@ -322,13 +322,8 @@ const About = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <div className="p-4 space-y-2">
-                      <h3 className="font-bold text-lg truncate">{photo.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{photo.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground pt-2 border-t border-primary/20">
-                        <Icon name="Calendar" size={14} />
-                        {new Date(photo.created_at).toLocaleDateString('ru-RU')}
-                      </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg">{photo.title}</h3>
                     </div>
                   </Card>
                 ))}
