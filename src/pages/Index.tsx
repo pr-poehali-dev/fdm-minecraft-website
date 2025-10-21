@@ -612,7 +612,7 @@ const Index = () => {
         onClick={toggleTheme}
         size="icon"
         variant="outline"
-        className="fixed top-6 right-6 rounded-full shadow-lg z-50 transition-all hover:scale-110 bg-background/80 backdrop-blur-sm"
+        className="fixed bottom-6 left-6 rounded-full shadow-lg z-50 transition-all hover:scale-110 bg-background/80 backdrop-blur-sm"
         aria-label="Переключить тему"
       >
         <Icon name={isDarkMode ? "Sun" : "Moon"} size={20} />
