@@ -7,15 +7,13 @@
       "expectedStatus": 200
     },
     {
-      "name": "Add new video",
-      "method": "POST",
+      "name": "Login with password",
+      "method": "PUT",
       "path": "/",
       "body": {
-        "title": "Тестовое видео",
-        "author": "TestAuthor",
-        "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "password": "202020lol"
       },
-      "expectedStatus": 201
+      "expectedStatus": 200
     }
   ]
 }

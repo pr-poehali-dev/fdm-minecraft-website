@@ -16,6 +16,7 @@ interface Video {
   author: string;
   video_url: string;
   is_short: boolean;
+  views: number;
   created_at: string;
 }
 
@@ -160,6 +161,17 @@ export default function VideoFacts() {
     }
   };
 
+  const incrementViews = async (id: number) => {
+    try {
+      await fetch(`${API_URL}?id=${id}`, {
+        method: 'PATCH'
+      });
+      fetchVideos();
+    } catch (error) {
+      console.error('Failed to increment views:', error);
+    }
+  };
+
   const deleteVideo = async (id: number) => {
     try {
       const response = await fetch(`${API_URL}?id=${id}`, {
@@ -229,14 +241,19 @@ export default function VideoFacts() {
           <div className={isShort ? "mt-4" : "flex flex-col justify-between"}>
             <div>
               <h3 className="text-2xl font-bold mb-2">{video.title}</h3>
-              <p className="text-muted-foreground flex items-center gap-2 mb-4">
+              <p className="text-muted-foreground flex items-center gap-2 mb-2">
                 <Icon name="User" size={16} />
                 {video.author}
+              </p>
+              <p className="text-muted-foreground flex items-center gap-2 mb-4">
+                <Icon name="Eye" size={16} />
+                {video.views} {video.views === 1 ? 'просмотр' : video.views < 5 ? 'просмотра' : 'просмотров'}
               </p>
               <a 
                 href={video.video_url} 
                 target="_blank" 
                 rel="noopener noreferrer"
+                onClick={() => incrementViews(video.id)}
                 className="text-primary hover:underline flex items-center gap-2"
               >
                 <Icon name="ExternalLink" size={16} />

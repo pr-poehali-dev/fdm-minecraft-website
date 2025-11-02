@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 import jwt
 from datetime import datetime, timedelta
 
-ADMIN_PASSWORD = "admin123"
+ADMIN_PASSWORD = "202020lol"
 
 def verify_token(headers: Dict[str, str]) -> Optional[Dict[str, Any]]:
     token = headers.get('x-auth-token') or headers.get('X-Auth-Token')
@@ -34,7 +34,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT, PATCH, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token',
                 'Access-Control-Max-Age': '86400'
             },
@@ -47,7 +47,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     try:
         if method == 'GET':
-            cur.execute('SELECT id, title, author, video_url, is_short, created_at FROM t_p55599668_fdm_minecraft_websit.video_facts ORDER BY created_at DESC')
+            cur.execute('SELECT id, title, author, video_url, is_short, views, created_at FROM t_p55599668_fdm_minecraft_websit.video_facts ORDER BY created_at DESC')
             videos = cur.fetchall()
             
             videos_list = []
@@ -58,6 +58,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'author': video['author'],
                     'video_url': video['video_url'],
                     'is_short': video['is_short'],
+                    'views': video['views'] or 0,
                     'created_at': video['created_at'].isoformat() if video['created_at'] else None
                 })
             
@@ -143,6 +144,34 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 },
                 'isBase64Encoded': False,
                 'body': json.dumps({'id': video_id, 'message': 'Video added successfully'})
+            }
+        
+        if method == 'PATCH':
+            params = event.get('queryStringParameters', {})
+            video_id = params.get('id')
+            
+            if not video_id:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'error': 'Video ID is required'})
+                }
+            
+            cur.execute(
+                'UPDATE t_p55599668_fdm_minecraft_websit.video_facts SET views = views + 1 WHERE id = %s RETURNING views',
+                (video_id,)
+            )
+            result = cur.fetchone()
+            conn.commit()
+            
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'isBase64Encoded': False,
+                'body': json.dumps({'views': result['views'] if result else 0})
             }
         
         if method == 'DELETE':
