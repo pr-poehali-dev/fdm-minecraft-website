@@ -250,6 +250,14 @@ const Index = () => {
               </Button>
               <Button 
                 variant="ghost"
+                onClick={() => navigate("/video-facts")}
+                className="text-foreground hover:text-primary transition-colors minecraft-button text-sm lg:text-base"
+              >
+                <Icon name="Video" size={16} className="mr-1 lg:mr-2" />
+                ВидеоФакты
+              </Button>
+              <Button 
+                variant="ghost"
                 onClick={() => navigate("/forum-admin")}
                 className="text-orange-400 hover:text-orange-300 transition-colors minecraft-button text-sm lg:text-base"
               >
@@ -286,6 +294,14 @@ const Index = () => {
               >
                 <Icon name="MessageSquare" size={18} className="mr-2" />
                 Форум
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={() => { navigate("/video-facts"); setMobileMenuOpen(false); }}
+                className="w-full justify-start text-foreground hover:text-primary transition-colors minecraft-button"
+              >
+                <Icon name="Video" size={18} className="mr-2" />
+                ВидеоФакты
               </Button>
               <Button 
                 variant="ghost"
