@@ -11,6 +11,7 @@ import ForumAdmin from "./pages/ForumAdmin";
 import GalleryAdmin from "./pages/GalleryAdmin";
 import VideoFacts from "./pages/VideoFacts";
 import NotFound from "./pages/NotFound";
+import MusicPlayer from "./components/MusicPlayer";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => {
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <MusicPlayer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
