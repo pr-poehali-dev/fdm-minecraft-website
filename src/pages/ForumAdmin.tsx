@@ -6,6 +6,12 @@ import Icon from "@/components/ui/icon";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+
+const VIDEO_API_URL = "https://functions.poehali.dev/5cb318ce-7d10-4b48-ae74-369eb19c2392";
+const FORUM_API_URL = "https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b";
+const ADMIN_PASSWORD = "202020lol";
 
 interface ForumMessage {
   id: number;
@@ -19,64 +25,106 @@ interface ForumMessage {
   is_read: boolean;
 }
 
+interface Video {
+  id: number;
+  title: string;
+  author: string;
+  video_url: string;
+  is_short: boolean;
+  views: number;
+  created_at: string;
+}
+
 const ForumAdmin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(
+    localStorage.getItem('admin_token')
+  );
+  
   const [messages, setMessages] = useState<ForumMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [replyText, setReplyText] = useState<{ [key: number]: string }>({});
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
 
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videoAuthor, setVideoAuthor] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+
   useEffect(() => {
-    const savedAuth = sessionStorage.getItem('forum_admin_auth');
-    if (savedAuth === 'true') {
+    if (authToken) {
       setIsAuthenticated(true);
+      fetchMessages();
+      fetchVideos();
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [authToken]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
 
-    setTimeout(() => {
-      if (username === 'Lyntik7884' && password === '101010lola') {
+    try {
+      const response = await fetch(VIDEO_API_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        localStorage.setItem('admin_token', data.token);
+        setAuthToken(data.token);
         setIsAuthenticated(true);
-        sessionStorage.setItem('forum_admin_auth', 'true');
+        setPassword("");
         toast({
           title: "✅ Вход выполнен",
           description: "Добро пожаловать в админ-панель!",
         });
+        fetchMessages();
+        fetchVideos();
       } else {
         toast({
           title: "❌ Ошибка входа",
-          description: "Неверный логин или пароль",
+          description: "Неверный пароль",
           variant: "destructive",
         });
       }
+    } catch (error) {
+      toast({
+        title: "❌ Ошибка",
+        description: "Не удалось войти",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoggingIn(false);
-    }, 500);
+    }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('forum_admin_auth');
-    setUsername("");
+    localStorage.removeItem('admin_token');
+    setAuthToken(null);
     setPassword("");
     toast({
       title: "👋 Выход выполнен",
       description: "До встречи!",
     });
+    navigate("/");
   };
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b');
+      const response = await fetch(FORUM_API_URL);
       const data = await response.json();
       setMessages(data.messages || []);
     } catch (error) {
@@ -90,11 +138,93 @@ const ForumAdmin = () => {
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchMessages();
+  const fetchVideos = async () => {
+    try {
+      const response = await fetch(VIDEO_API_URL);
+      const data = await response.json();
+      setVideos(data.videos || []);
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось загрузить видео",
+        variant: "destructive"
+      });
     }
-  }, [isAuthenticated]);
+  };
+
+  const addVideo = async (e: React.FormEvent, isShort: boolean) => {
+    e.preventDefault();
+    
+    if (!videoTitle || !videoAuthor || !videoUrl) {
+      toast({
+        title: "Ошибка",
+        description: "Заполните все поля",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsVideoLoading(true);
+    try {
+      const response = await fetch(VIDEO_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Auth-Token': authToken || ''
+        },
+        body: JSON.stringify({
+          title: videoTitle,
+          author: videoAuthor,
+          video_url: videoUrl,
+          is_short: isShort
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Успешно!",
+          description: isShort ? "Shorts добавлен" : "Видео добавлено"
+        });
+        setVideoTitle("");
+        setVideoAuthor("");
+        setVideoUrl("");
+        fetchVideos();
+      }
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось добавить видео",
+        variant: "destructive"
+      });
+    } finally {
+      setIsVideoLoading(false);
+    }
+  };
+
+  const deleteVideo = async (id: number) => {
+    try {
+      const response = await fetch(`${VIDEO_API_URL}?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Auth-Token': authToken || ''
+        }
+      });
+      
+      if (response.ok) {
+        toast({
+          title: "Удалено",
+          description: "Видео удалено"
+        });
+        fetchVideos();
+      }
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось удалить видео",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleReply = async (messageId: number) => {
     const reply = replyText[messageId]?.trim();
@@ -110,7 +240,7 @@ const ForumAdmin = () => {
     setReplyingTo(messageId);
 
     try {
-      const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b', {
+      const response = await fetch(FORUM_API_URL, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +285,7 @@ const ForumAdmin = () => {
 
   const toggleReadStatus = async (messageId: number, currentStatus: boolean) => {
     try {
-      const response = await fetch('https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b', {
+      const response = await fetch(FORUM_API_URL, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -194,6 +324,9 @@ const ForumAdmin = () => {
         return <span className="px-2 py-1 bg-gray-500/20 text-gray-400 text-xs rounded">{status}</span>;
     }
   };
+
+  const regularVideos = videos.filter(v => !v.is_short);
+  const shortsVideos = videos.filter(v => v.is_short);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
@@ -245,51 +378,32 @@ const ForumAdmin = () => {
               <div className="inline-block p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40 minecraft-card">
                 <Icon name="Lock" size={48} className="text-orange-400" />
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 bg-clip-text text-transparent minecraft-text">
-                🔐 Вход в админ-панель
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-600 bg-clip-text text-transparent">
+                Админ-панель
               </h1>
               <p className="text-muted-foreground text-lg">
-                Введите логин и пароль для доступа
+                Управление форумом и видеофактами
               </p>
             </div>
 
-            <Card className="bg-gradient-to-br from-orange-500/10 via-red-500/10 to-orange-500/10 border-2 border-orange-500/30 p-8 shadow-2xl minecraft-card">
+            <Card className="p-8 backdrop-blur-sm bg-card/90 border-border/50 border-orange-500/30 minecraft-card">
               <form onSubmit={handleLogin} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground flex items-center gap-2">
-                    <Icon name="User" size={16} className="text-orange-400" />
-                    Логин
-                  </label>
+                  <Label htmlFor="password" className="text-lg">🔑 Пароль администратора</Label>
                   <Input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Введите логин"
-                    className="bg-background/50 border-orange-500/30 focus:border-orange-500 transition-all minecraft-input text-lg"
-                    disabled={isLoggingIn}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground flex items-center gap-2">
-                    <Icon name="KeyRound" size={16} className="text-orange-400" />
-                    Пароль
-                  </label>
-                  <Input
+                    id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Введите пароль"
-                    className="bg-background/50 border-orange-500/30 focus:border-orange-500 transition-all minecraft-input text-lg"
+                    className="h-12 text-lg minecraft-button"
                     disabled={isLoggingIn}
-                    required
                   />
                 </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-6 text-lg shadow-lg hover:shadow-orange-500/50 transition-all minecraft-button"
+                
+                <Button 
+                  type="submit" 
+                  className="w-full h-12 text-lg bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 minecraft-button"
                   disabled={isLoggingIn}
                 >
                   {isLoggingIn ? (
@@ -300,171 +414,249 @@ const ForumAdmin = () => {
                   ) : (
                     <>
                       <Icon name="LogIn" size={20} className="mr-2" />
-                      🔓 Войти
+                      Войти
                     </>
                   )}
                 </Button>
               </form>
             </Card>
-
-            <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 p-6 minecraft-card">
-              <div className="flex items-start gap-3">
-                <div className="p-2 bg-blue-500/20 rounded border border-blue-500/40">
-                  <Icon name="Info" size={20} className="text-blue-400" />
-                </div>
-                <div className="space-y-2 flex-1">
-                  <h3 className="font-bold text-lg text-foreground">🛡️ Безопасность</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Доступ к админ-панели защищён. Только администраторы сервера могут управлять сообщениями форума.
-                  </p>
-                </div>
-              </div>
-            </Card>
           </div>
         ) : (
-          <div className="space-y-8 animate-fade-in">
-            <div className="text-center space-y-4">
-              <div className="inline-block p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40 minecraft-card">
-                <Icon name="Shield" size={48} className="text-orange-400" />
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border-2 border-orange-500/40">
+                <Icon name="Shield" size={32} className="text-orange-400" />
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 bg-clip-text text-transparent minecraft-text">
-                🛡️ Админ-панель форума
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+                Админ-панель
               </h1>
-              <p className="text-muted-foreground text-lg">
-                Управление сообщениями и ответы игрокам
-              </p>
-              {messages.length > 0 && (
-                <div className="flex gap-4 justify-center flex-wrap mt-4">
-                  <div className="px-4 py-2 bg-blue-500/20 border-2 border-blue-500/40 rounded-lg">
-                    <span className="text-sm font-bold text-blue-400">
-                      📬 Непрочитанных: {messages.filter(m => !m.is_read).length}
-                    </span>
-                  </div>
-                  <div className="px-4 py-2 bg-green-500/20 border-2 border-green-500/40 rounded-lg">
-                    <span className="text-sm font-bold text-green-400">
-                      ✅ Всего: {messages.length}
-                    </span>
-                  </div>
-                </div>
-              )}
             </div>
 
-            {isLoading ? (
-            <div className="text-center py-12">
-              <Icon name="Loader2" size={48} className="animate-spin mx-auto text-primary" />
-              <p className="mt-4 text-muted-foreground">Загрузка сообщений...</p>
-            </div>
-          ) : messages.length === 0 ? (
-            <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 p-12 text-center minecraft-card">
-              <Icon name="Inbox" size={64} className="mx-auto mb-4 text-blue-400" />
-              <h3 className="text-xl font-bold mb-2">Пока нет сообщений</h3>
-              <p className="text-muted-foreground">Когда игроки отправят сообщения через форум, они появятся здесь</p>
-            </Card>
-          ) : (
-            <div className="space-y-6">
-              {messages.map((msg) => (
-                <Card 
-                  key={msg.id} 
-                  className={`bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 border-2 p-6 minecraft-card transition-all ${
-                    !msg.is_read 
-                      ? 'border-blue-500/60 shadow-lg shadow-blue-500/20' 
-                      : 'border-purple-500/30'
-                  }`}
-                >
+            <Tabs defaultValue="forum" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="forum" className="flex items-center gap-2">
+                  <Icon name="MessageSquare" size={18} />
+                  Форум ({messages.filter(m => !m.is_read).length})
+                </TabsTrigger>
+                <TabsTrigger value="videos" className="flex items-center gap-2">
+                  <Icon name="Video" size={18} />
+                  ВидеоФакты ({videos.length})
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="forum" className="space-y-6 mt-6">
+                {isLoading ? (
+                  <div className="text-center py-12">
+                    <Icon name="Loader2" size={48} className="animate-spin mx-auto mb-4 text-primary" />
+                    <p className="text-muted-foreground">Загрузка сообщений...</p>
+                  </div>
+                ) : messages.length === 0 ? (
+                  <Card className="p-12 text-center">
+                    <Icon name="Mail" size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <p className="text-xl text-muted-foreground">Сообщений пока нет</p>
+                  </Card>
+                ) : (
                   <div className="space-y-4">
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div className="space-y-2 flex-1">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <Icon name="User" size={20} className="text-purple-400" />
-                          <span className="font-bold text-lg">{msg.nickname}</span>
-                          {getStatusBadge(msg.status)}
-                          <Button
-                            onClick={() => toggleReadStatus(msg.id, msg.is_read)}
-                            size="sm"
-                            variant="ghost"
-                            className={`ml-2 text-xs ${
-                              msg.is_read 
-                                ? 'bg-gray-500/20 text-gray-400 hover:bg-gray-500/30' 
-                                : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/40'
-                            }`}
-                          >
-                            {msg.is_read ? (
-                              <>
-                                <Icon name="CheckCheck" size={14} className="mr-1" />
-                                Прочитано
-                              </>
-                            ) : (
-                              <>
-                                <Icon name="Mail" size={14} className="mr-1" />
-                                Непрочитано
-                              </>
-                            )}
-                          </Button>
+                    {messages.map((msg) => (
+                      <Card 
+                        key={msg.id} 
+                        className={`p-6 backdrop-blur-sm border-border/50 transition-all ${
+                          !msg.is_read ? 'bg-card/90 border-orange-500/40' : 'bg-card/70'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-primary/20 rounded-lg">
+                              <Icon name="User" size={24} className="text-primary" />
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-lg">{msg.nickname}</h3>
+                              <p className="text-sm text-muted-foreground">{formatDate(msg.created_at)}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {getStatusBadge(msg.status)}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleReadStatus(msg.id, msg.is_read)}
+                              className="h-8"
+                            >
+                              <Icon name={msg.is_read ? "Mail" : "MailOpen"} size={16} />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Icon name="Clock" size={14} />
-                          {formatDate(msg.created_at)}
-                        </div>
-                      </div>
-                      <div className="text-sm">
-                        <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded border border-purple-500/40">
-                          ID: #{msg.id}
-                        </span>
-                      </div>
-                    </div>
 
-                    <div className="bg-background/50 rounded-lg p-4 border border-purple-500/20">
-                      <p className="text-sm font-bold text-purple-400 mb-2">💬 Сообщение игрока:</p>
-                      <p className="whitespace-pre-wrap text-foreground">{msg.message}</p>
-                    </div>
-
-                    {msg.admin_reply ? (
-                      <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/30">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Icon name="CheckCircle" size={16} className="text-green-400" />
-                          <p className="text-sm font-bold text-green-400">✅ Ваш ответ:</p>
-                          {msg.replied_at && (
-                            <span className="text-xs text-muted-foreground ml-auto">
-                              {formatDate(msg.replied_at)}
-                            </span>
-                          )}
+                        <div className="mb-4 p-4 bg-muted/50 rounded-lg">
+                          <p className="whitespace-pre-wrap">{msg.message}</p>
                         </div>
-                        <p className="whitespace-pre-wrap text-foreground">{msg.admin_reply}</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <Textarea
-                          value={replyText[msg.id] || ''}
-                          onChange={(e) => setReplyText({ ...replyText, [msg.id]: e.target.value })}
-                          placeholder="Напишите ответ игроку..."
-                          className="bg-background/50 border-purple-500/30 focus:border-purple-500 transition-all minecraft-input min-h-[120px] resize-none"
-                          disabled={replyingTo === msg.id}
-                        />
-                        <Button
-                          onClick={() => handleReply(msg.id)}
-                          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 shadow-lg hover:shadow-purple-500/50 transition-all minecraft-button"
-                          disabled={replyingTo === msg.id}
-                        >
-                          {replyingTo === msg.id ? (
-                            <>
-                              <Icon name="Loader2" size={18} className="mr-2 animate-spin" />
-                              Отправка...
-                            </>
-                          ) : (
-                            <>
-                              <Icon name="Send" size={18} className="mr-2" />
-                              📨 Отправить ответ
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    )}
+
+                        {msg.admin_reply && (
+                          <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/30">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Icon name="Reply" size={16} className="text-primary" />
+                              <span className="text-sm font-semibold text-primary">Ваш ответ:</span>
+                              <span className="text-xs text-muted-foreground">{msg.replied_at ? formatDate(msg.replied_at) : ''}</span>
+                            </div>
+                            <p className="whitespace-pre-wrap text-sm">{msg.admin_reply}</p>
+                          </div>
+                        )}
+
+                        {msg.status === 'new' && (
+                          <div className="space-y-3">
+                            <Textarea
+                              placeholder="Введите ответ..."
+                              value={replyText[msg.id] || ''}
+                              onChange={(e) => setReplyText({ ...replyText, [msg.id]: e.target.value })}
+                              className="min-h-[100px]"
+                            />
+                            <Button
+                              onClick={() => handleReply(msg.id)}
+                              disabled={replyingTo === msg.id}
+                              className="w-full"
+                            >
+                              {replyingTo === msg.id ? (
+                                <>
+                                  <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
+                                  Отправка...
+                                </>
+                              ) : (
+                                <>
+                                  <Icon name="Send" size={16} className="mr-2" />
+                                  Отправить ответ
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        )}
+                      </Card>
+                    ))}
                   </div>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="videos" className="space-y-6 mt-6">
+                <Tabs defaultValue="regular">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="regular">Обычные видео ({regularVideos.length})</TabsTrigger>
+                    <TabsTrigger value="shorts">Shorts ({shortsVideos.length})</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="regular" className="space-y-6 mt-6">
+                    <Card className="p-6">
+                      <h3 className="text-xl font-bold mb-4">Добавить видео</h3>
+                      <form onSubmit={(e) => addVideo(e, false)} className="space-y-4">
+                        <div>
+                          <Label>Название</Label>
+                          <Input
+                            value={videoTitle}
+                            onChange={(e) => setVideoTitle(e.target.value)}
+                            placeholder="Введите название видео"
+                          />
+                        </div>
+                        <div>
+                          <Label>Автор</Label>
+                          <Input
+                            value={videoAuthor}
+                            onChange={(e) => setVideoAuthor(e.target.value)}
+                            placeholder="Укажите автора"
+                          />
+                        </div>
+                        <div>
+                          <Label>Ссылка на YouTube</Label>
+                          <Input
+                            value={videoUrl}
+                            onChange={(e) => setVideoUrl(e.target.value)}
+                            placeholder="https://www.youtube.com/watch?v=..."
+                          />
+                        </div>
+                        <Button type="submit" disabled={isVideoLoading} className="w-full">
+                          {isVideoLoading ? "Добавление..." : "Добавить видео"}
+                        </Button>
+                      </form>
+                    </Card>
+
+                    <div className="grid gap-4">
+                      {regularVideos.map((video) => (
+                        <Card key={video.id} className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-bold">{video.title}</h4>
+                              <p className="text-sm text-muted-foreground">Автор: {video.author}</p>
+                              <p className="text-sm text-muted-foreground">Просмотров: {video.views}</p>
+                            </div>
+                            <Button
+                              onClick={() => deleteVideo(video.id)}
+                              variant="destructive"
+                              size="sm"
+                            >
+                              <Icon name="Trash2" size={16} />
+                            </Button>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="shorts" className="space-y-6 mt-6">
+                    <Card className="p-6">
+                      <h3 className="text-xl font-bold mb-4">Добавить Shorts</h3>
+                      <form onSubmit={(e) => addVideo(e, true)} className="space-y-4">
+                        <div>
+                          <Label>Название</Label>
+                          <Input
+                            value={videoTitle}
+                            onChange={(e) => setVideoTitle(e.target.value)}
+                            placeholder="Введите название"
+                          />
+                        </div>
+                        <div>
+                          <Label>Автор</Label>
+                          <Input
+                            value={videoAuthor}
+                            onChange={(e) => setVideoAuthor(e.target.value)}
+                            placeholder="Укажите автора"
+                          />
+                        </div>
+                        <div>
+                          <Label>Ссылка на YouTube Shorts</Label>
+                          <Input
+                            value={videoUrl}
+                            onChange={(e) => setVideoUrl(e.target.value)}
+                            placeholder="https://www.youtube.com/shorts/..."
+                          />
+                        </div>
+                        <Button type="submit" disabled={isVideoLoading} className="w-full">
+                          {isVideoLoading ? "Добавление..." : "Добавить Shorts"}
+                        </Button>
+                      </form>
+                    </Card>
+
+                    <div className="grid gap-4">
+                      {shortsVideos.map((video) => (
+                        <Card key={video.id} className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-bold">{video.title}</h4>
+                              <p className="text-sm text-muted-foreground">Автор: {video.author}</p>
+                              <p className="text-sm text-muted-foreground">Просмотров: {video.views}</p>
+                            </div>
+                            <Button
+                              onClick={() => deleteVideo(video.id)}
+                              variant="destructive"
+                              size="sm"
+                            >
+                              <Icon name="Trash2" size={16} />
+                            </Button>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </TabsContent>
+            </Tabs>
+          </div>
         )}
       </div>
     </div>

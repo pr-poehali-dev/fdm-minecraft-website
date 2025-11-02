@@ -27,19 +27,15 @@ export default function VideoFacts() {
   const [videoUrl, setVideoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"regular" | "shorts">("regular");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem('admin_token')
   );
+  const isAuthenticated = !!authToken;
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchVideos();
-    if (authToken) {
-      setIsAuthenticated(true);
-    }
   }, []);
 
   const fetchVideos = async () => {
@@ -56,54 +52,9 @@ export default function VideoFacts() {
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch(API_URL, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password })
-      });
 
-      const data = await response.json();
 
-      if (response.ok && data.token) {
-        localStorage.setItem('admin_token', data.token);
-        setAuthToken(data.token);
-        setIsAuthenticated(true);
-        setPassword("");
-        toast({
-          title: "Успешно!",
-          description: "Вы вошли в админ-панель"
-        });
-      } else {
-        toast({
-          title: "Ошибка",
-          description: "Неверный пароль",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Ошибка",
-        description: "Не удалось войти",
-        variant: "destructive"
-      });
-    }
-  };
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_token');
-    setAuthToken(null);
-    setIsAuthenticated(false);
-    toast({
-      title: "Вы вышли",
-      description: "Вы вышли из админ-панели"
-    });
-  };
 
   const addVideo = async (e: React.FormEvent, isShort: boolean) => {
     e.preventDefault();
@@ -290,28 +241,14 @@ export default function VideoFacts() {
             На главную
           </Button>
           
-          {isAuthenticated ? (
-            <Button 
-              variant="outline"
-              onClick={handleLogout}
-              className="text-foreground hover:text-destructive"
-            >
-              <Icon name="LogOut" size={20} className="mr-2" />
-              Выйти
-            </Button>
-          ) : (
-            <Button 
-              variant="outline"
-              onClick={() => {
-                const elem = document.getElementById('login-form');
-                elem?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-foreground hover:text-primary"
-            >
-              <Icon name="Lock" size={20} className="mr-2" />
-              Войти
-            </Button>
-          )}
+          <Button 
+            variant="outline"
+            onClick={() => navigate('/forum-admin')}
+            className="text-foreground hover:text-primary"
+          >
+            <Icon name="Shield" size={20} className="mr-2" />
+            {isAuthenticated ? 'Админка' : 'Войти'}
+          </Button>
         </div>
       </nav>
 
@@ -322,28 +259,16 @@ export default function VideoFacts() {
         </div>
 
         {!isAuthenticated && (
-          <Card id="login-form" className="p-6 backdrop-blur-sm bg-card/90 border-border/50 border-primary/30">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <Icon name="Lock" size={24} />
-              Вход в админ-панель
-            </h2>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <Label htmlFor="password">Пароль</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Введите пароль администратора"
-                  className="mt-1"
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                <Icon name="LogIn" size={16} className="mr-2" />
-                Войти
+          <Card className="p-6 backdrop-blur-sm bg-card/90 border-border/50 border-primary/30">
+            <div className="text-center space-y-4">
+              <Icon name="Lock" size={48} className="mx-auto text-primary" />
+              <h2 className="text-2xl font-bold">Требуется авторизация</h2>
+              <p className="text-muted-foreground">Для добавления и удаления видео войдите через админ-панель</p>
+              <Button onClick={() => navigate('/forum-admin')} className="w-full">
+                <Icon name="Shield" size={16} className="mr-2" />
+                Перейти в админ-панель
               </Button>
-            </form>
+            </div>
           </Card>
         )}
 
