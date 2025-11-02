@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Icon from "@/components/ui/icon";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const API_URL = "https://functions.poehali.dev/5cb318ce-7d10-4b48-ae74-369eb19c2392";
 
@@ -13,6 +14,7 @@ interface Video {
   title: string;
   author: string;
   video_url: string;
+  is_short: boolean;
   created_at: string;
 }
 
@@ -22,6 +24,7 @@ export default function VideoFacts() {
   const [author, setAuthor] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<"regular" | "shorts">("regular");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function VideoFacts() {
     }
   };
 
-  const addVideo = async (e: React.FormEvent) => {
+  const addVideo = async (e: React.FormEvent, isShort: boolean) => {
     e.preventDefault();
     
     if (!title || !author || !videoUrl) {
@@ -64,14 +67,15 @@ export default function VideoFacts() {
         body: JSON.stringify({
           title,
           author,
-          video_url: videoUrl
+          video_url: videoUrl,
+          is_short: isShort
         })
       });
 
       if (response.ok) {
         toast({
           title: "Успешно!",
-          description: "Видео добавлено"
+          description: isShort ? "Shorts добавлен" : "Видео добавлено"
         });
         setTitle("");
         setAuthor("");
@@ -109,9 +113,69 @@ export default function VideoFacts() {
   };
 
   const getVideoId = (url: string): string | null => {
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)|(shorts\/))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
-    return (match && match[7].length === 11) ? match[7] : null;
+    return (match && match[8] && match[8].length === 11) ? match[8] : null;
+  };
+
+  const regularVideos = videos.filter(v => !v.is_short);
+  const shortsVideos = videos.filter(v => v.is_short);
+
+  const renderVideoCard = (video: Video) => {
+    const videoId = getVideoId(video.video_url);
+    const isShort = video.is_short;
+    
+    return (
+      <Card key={video.id} className="overflow-hidden backdrop-blur-sm bg-card/90 border-border/50">
+        <div className={isShort ? "p-6" : "grid md:grid-cols-2 gap-4 p-6"}>
+          <div className={isShort ? "aspect-[9/16] max-w-[300px] mx-auto rounded-lg overflow-hidden bg-muted" : "aspect-video rounded-lg overflow-hidden bg-muted"}>
+            {videoId ? (
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${videoId}`}
+                title={video.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <Icon name="Video" size={48} className="text-muted-foreground" />
+              </div>
+            )}
+          </div>
+          
+          <div className={isShort ? "mt-4" : "flex flex-col justify-between"}>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">{video.title}</h3>
+              <p className="text-muted-foreground flex items-center gap-2 mb-4">
+                <Icon name="User" size={16} />
+                {video.author}
+              </p>
+              <a 
+                href={video.video_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline flex items-center gap-2"
+              >
+                <Icon name="ExternalLink" size={16} />
+                Смотреть на YouTube
+              </a>
+            </div>
+            
+            <Button 
+              onClick={() => deleteVideo(video.id)} 
+              variant="destructive"
+              className="mt-4"
+            >
+              <Icon name="Trash2" size={16} className="mr-2" />
+              Удалить
+            </Button>
+          </div>
+        </div>
+      </Card>
+    );
   };
 
   return (
@@ -122,111 +186,128 @@ export default function VideoFacts() {
           <h1 className="text-4xl font-bold">ВидеоФакты</h1>
         </div>
 
-        <Card className="p-6 backdrop-blur-sm bg-card/90 border-border/50">
-          <h2 className="text-2xl font-bold mb-4">Добавить видео</h2>
-          <form onSubmit={addVideo} className="space-y-4">
-            <div>
-              <Label htmlFor="title">Название видео</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Введите название"
-                className="mt-1"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="author">Автор</Label>
-              <Input
-                id="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Укажите автора видео"
-                className="mt-1"
-              />
-            </div>
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "regular" | "shorts")} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="regular" className="flex items-center gap-2">
+              <Icon name="Video" size={18} />
+              Обычные видео
+            </TabsTrigger>
+            <TabsTrigger value="shorts" className="flex items-center gap-2">
+              <Icon name="Smartphone" size={18} />
+              Shorts
+            </TabsTrigger>
+          </TabsList>
 
-            <div>
-              <Label htmlFor="videoUrl">Ссылка на видео (YouTube)</Label>
-              <Input
-                id="videoUrl"
-                value={videoUrl}
-                onChange={(e) => setVideoUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
-                className="mt-1"
-              />
-            </div>
-
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Добавление..." : "Добавить видео"}
-            </Button>
-          </form>
-        </Card>
-
-        <div className="grid gap-6">
-          {videos.map((video) => {
-            const videoId = getVideoId(video.video_url);
-            return (
-              <Card key={video.id} className="overflow-hidden backdrop-blur-sm bg-card/90 border-border/50">
-                <div className="grid md:grid-cols-2 gap-4 p-6">
-                  <div className="aspect-video rounded-lg overflow-hidden bg-muted">
-                    {videoId ? (
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${videoId}`}
-                        title={video.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <Icon name="Video" size={48} className="text-muted-foreground" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-2">{video.title}</h3>
-                      <p className="text-muted-foreground flex items-center gap-2 mb-4">
-                        <Icon name="User" size={16} />
-                        {video.author}
-                      </p>
-                      <a 
-                        href={video.video_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline flex items-center gap-2"
-                      >
-                        <Icon name="ExternalLink" size={16} />
-                        Смотреть на YouTube
-                      </a>
-                    </div>
-                    
-                    <Button 
-                      onClick={() => deleteVideo(video.id)} 
-                      variant="destructive"
-                      className="mt-4"
-                    >
-                      <Icon name="Trash2" size={16} className="mr-2" />
-                      Удалить
-                    </Button>
-                  </div>
+          <TabsContent value="regular" className="space-y-6">
+            <Card className="p-6 backdrop-blur-sm bg-card/90 border-border/50">
+              <h2 className="text-2xl font-bold mb-4">Добавить видео</h2>
+              <form onSubmit={(e) => addVideo(e, false)} className="space-y-4">
+                <div>
+                  <Label htmlFor="title-regular">Название видео</Label>
+                  <Input
+                    id="title-regular"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Введите название"
+                    className="mt-1"
+                  />
                 </div>
-              </Card>
-            );
-          })}
-          
-          {videos.length === 0 && (
-            <Card className="p-12 text-center backdrop-blur-sm bg-card/90 border-border/50">
-              <Icon name="Video" size={64} className="mx-auto mb-4 text-muted-foreground" />
-              <p className="text-xl text-muted-foreground">Видео пока нет. Добавьте первое!</p>
+                
+                <div>
+                  <Label htmlFor="author-regular">Автор</Label>
+                  <Input
+                    id="author-regular"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    placeholder="Укажите автора видео"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="videoUrl-regular">Ссылка на видео (YouTube)</Label>
+                  <Input
+                    id="videoUrl-regular"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="mt-1"
+                  />
+                </div>
+
+                <Button type="submit" disabled={isLoading} className="w-full">
+                  {isLoading ? "Добавление..." : "Добавить видео"}
+                </Button>
+              </form>
             </Card>
-          )}
-        </div>
+
+            <div className="grid gap-6">
+              {regularVideos.map(renderVideoCard)}
+              
+              {regularVideos.length === 0 && (
+                <Card className="p-12 text-center backdrop-blur-sm bg-card/90 border-border/50">
+                  <Icon name="Video" size={64} className="mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-xl text-muted-foreground">Обычных видео пока нет. Добавьте первое!</p>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="shorts" className="space-y-6">
+            <Card className="p-6 backdrop-blur-sm bg-card/90 border-border/50">
+              <h2 className="text-2xl font-bold mb-4">Добавить Shorts</h2>
+              <form onSubmit={(e) => addVideo(e, true)} className="space-y-4">
+                <div>
+                  <Label htmlFor="title-shorts">Название shorts</Label>
+                  <Input
+                    id="title-shorts"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Введите название"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="author-shorts">Автор</Label>
+                  <Input
+                    id="author-shorts"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    placeholder="Укажите автора"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="videoUrl-shorts">Ссылка на Shorts (YouTube)</Label>
+                  <Input
+                    id="videoUrl-shorts"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/shorts/..."
+                    className="mt-1"
+                  />
+                </div>
+
+                <Button type="submit" disabled={isLoading} className="w-full">
+                  {isLoading ? "Добавление..." : "Добавить Shorts"}
+                </Button>
+              </form>
+            </Card>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {shortsVideos.map(renderVideoCard)}
+              
+              {shortsVideos.length === 0 && (
+                <Card className="md:col-span-2 lg:col-span-3 p-12 text-center backdrop-blur-sm bg-card/90 border-border/50">
+                  <Icon name="Smartphone" size={64} className="mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-xl text-muted-foreground">Shorts пока нет. Добавьте первый!</p>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

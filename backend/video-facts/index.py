@@ -31,7 +31,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     try:
         if method == 'GET':
-            cur.execute('SELECT id, title, author, video_url, created_at FROM t_p55599668_fdm_minecraft_websit.video_facts ORDER BY created_at DESC')
+            cur.execute('SELECT id, title, author, video_url, is_short, created_at FROM t_p55599668_fdm_minecraft_websit.video_facts ORDER BY created_at DESC')
             videos = cur.fetchall()
             
             videos_list = []
@@ -41,6 +41,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'title': video['title'],
                     'author': video['author'],
                     'video_url': video['video_url'],
+                    'is_short': video['is_short'],
                     'created_at': video['created_at'].isoformat() if video['created_at'] else None
                 })
             
@@ -59,6 +60,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             title = body_data.get('title', '')
             author = body_data.get('author', '')
             video_url = body_data.get('video_url', '')
+            is_short = body_data.get('is_short', False)
             
             if not title or not author or not video_url:
                 return {
@@ -68,8 +70,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
             
             cur.execute(
-                "INSERT INTO t_p55599668_fdm_minecraft_websit.video_facts (title, author, video_url) VALUES (%s, %s, %s) RETURNING id",
-                (title, author, video_url)
+                "INSERT INTO t_p55599668_fdm_minecraft_websit.video_facts (title, author, video_url, is_short) VALUES (%s, %s, %s, %s) RETURNING id",
+                (title, author, video_url, is_short)
             )
             video_id = cur.fetchone()['id']
             conn.commit()
