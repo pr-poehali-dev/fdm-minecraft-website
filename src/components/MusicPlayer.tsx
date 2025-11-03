@@ -3,44 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 import { Slider } from "@/components/ui/slider";
+import MusicAdmin from "./MusicAdmin";
 
 interface Track {
+  id: string;
   title: string;
   artist: string;
+  url: string;
 }
 
-const MINECRAFT_TRACKS: Track[] = [
-  { title: "Key", artist: "C418" },
-  { title: "Subwoofer Lullaby", artist: "C418" },
-  { title: "Living Mice", artist: "C418" },
-  { title: "Haggstrom", artist: "C418" },
-  { title: "Minecraft", artist: "C418" },
-  { title: "Oxygene", artist: "C418" },
-  { title: "Mice on Venus", artist: "C418" },
-  { title: "Dry Hands", artist: "C418" },
-  { title: "Wet Hands", artist: "C418" },
-  { title: "Clark", artist: "C418" },
-  { title: "Sweden", artist: "C418" },
-  { title: "Danny", artist: "C418" },
-  { title: "Biome Fest", artist: "C418" },
-  { title: "Blind Spots", artist: "C418" },
-  { title: "Haunt Muskie", artist: "C418" },
-  { title: "Aria Math", artist: "C418" },
-  { title: "Dreiton", artist: "C418" },
-  { title: "Taswell", artist: "C418" },
-  { title: "Mutation", artist: "C418" },
-  { title: "Moog City 2", artist: "C418" },
-  { title: "Beginning 2", artist: "C418" },
-  { title: "Floating Trees", artist: "C418" },
-  { title: "Concrete Halls", artist: "C418" },
-  { title: "Dead Voxel", artist: "C418" },
-  { title: "Warmth", artist: "C418" },
-  { title: "Ballad of the Cats", artist: "C418" },
-  { title: "Boss", artist: "C418" },
-  { title: "End", artist: "C418" },
+const DEFAULT_TRACKS: Track[] = [
+  { id: "1", title: "Key", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { id: "2", title: "Subwoofer Lullaby", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+  { id: "3", title: "Living Mice", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+  { id: "4", title: "Haggstrom", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+  { id: "5", title: "Minecraft", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
 ];
 
 const MusicPlayer = () => {
+  const [tracks, setTracks] = useState<Track[]>(() => {
+    const saved = localStorage.getItem('musicTracks');
+    return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
+  });
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [volume, setVolume] = useState(50);
@@ -48,6 +32,14 @@ const MusicPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handleTracksUpdate = (newTracks: Track[]) => {
+    setTracks(newTracks);
+    localStorage.setItem('musicTracks', JSON.stringify(newTracks));
+    if (currentTrack >= newTracks.length) {
+      setCurrentTrack(0);
+    }
+  };
 
   useEffect(() => {
     const audio = new Audio();
@@ -85,8 +77,8 @@ const MusicPlayer = () => {
   }, [volume]);
 
   useEffect(() => {
-    if (audioRef.current && isPlaying) {
-      audioRef.current.src = `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${(currentTrack % 16) + 1}.mp3`;
+    if (audioRef.current && isPlaying && tracks.length > 0) {
+      audioRef.current.src = tracks[currentTrack].url;
       
       audioRef.current.play().catch(() => {
         setIsPlaying(false);
@@ -94,18 +86,18 @@ const MusicPlayer = () => {
     } else if (audioRef.current) {
       audioRef.current.pause();
     }
-  }, [currentTrack, isPlaying]);
+  }, [currentTrack, isPlaying, tracks]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
 
   const handleNext = () => {
-    setCurrentTrack((prev) => (prev + 1) % MINECRAFT_TRACKS.length);
+    setCurrentTrack((prev) => (prev + 1) % tracks.length);
   };
 
   const handlePrevious = () => {
-    setCurrentTrack((prev) => (prev - 1 + MINECRAFT_TRACKS.length) % MINECRAFT_TRACKS.length);
+    setCurrentTrack((prev) => (prev - 1 + tracks.length) % tracks.length);
   };
 
   const formatTime = (time: number) => {
@@ -123,9 +115,26 @@ const MusicPlayer = () => {
     }
   };
 
+  if (tracks.length === 0) {
+    return (
+      <>
+        <MusicAdmin tracks={tracks} onTracksUpdate={handleTracksUpdate} />
+        <div className="fixed bottom-6 right-6 z-50">
+          <Card className="p-4 backdrop-blur-md bg-card/95 border-primary/40">
+            <p className="text-sm text-muted-foreground">
+              Нет треков. Откройте админ-панель для добавления музыки.
+            </p>
+          </Card>
+        </div>
+      </>
+    );
+  }
+
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <Card 
+    <>
+      <MusicAdmin tracks={tracks} onTracksUpdate={handleTracksUpdate} />
+      <div className="fixed bottom-6 right-6 z-50">
+        <Card 
         className={`backdrop-blur-md bg-card/95 border-primary/40 shadow-2xl transition-all duration-300 ${
           isMinimized ? 'w-16 h-16' : 'w-80'
         }`}
@@ -154,9 +163,9 @@ const MusicPlayer = () => {
                   )}
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">Minecraft Music</h3>
+                  <h3 className="font-bold text-sm">{tracks[currentTrack].artist}</h3>
                   <p className="text-xs text-muted-foreground truncate max-w-[150px]">
-                    {MINECRAFT_TRACKS[currentTrack].title}
+                    {tracks[currentTrack].title}
                   </p>
                 </div>
               </div>
@@ -227,9 +236,9 @@ const MusicPlayer = () => {
             </div>
 
             <div className="flex items-center gap-1 flex-wrap max-h-24 overflow-y-auto scrollbar-thin">
-              {MINECRAFT_TRACKS.map((track, index) => (
+              {tracks.map((track, index) => (
                 <Button
-                  key={index}
+                  key={track.id}
                   onClick={() => {
                     setCurrentTrack(index);
                     if (!isPlaying) setIsPlaying(true);
@@ -246,6 +255,7 @@ const MusicPlayer = () => {
         )}
       </Card>
     </div>
+    </>
   );
 };
 
