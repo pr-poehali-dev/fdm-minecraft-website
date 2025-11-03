@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
 import { Slider } from "@/components/ui/slider";
 import MusicAdmin from "./MusicAdmin";
+import AdminAuth from "./AdminAuth";
 
 interface Track {
   id: string;
@@ -21,6 +22,10 @@ const DEFAULT_TRACKS: Track[] = [
 ];
 
 const MusicPlayer = () => {
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return localStorage.getItem('adminAuthenticated') === 'true';
+  });
+  const [showAuth, setShowAuth] = useState(false);
   const [tracks, setTracks] = useState<Track[]>(() => {
     const saved = localStorage.getItem('musicTracks');
     return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
@@ -39,6 +44,11 @@ const MusicPlayer = () => {
     if (currentTrack >= newTracks.length) {
       setCurrentTrack(0);
     }
+  };
+
+  const handleAuthSuccess = () => {
+    setIsAdmin(true);
+    setShowAuth(false);
   };
 
   useEffect(() => {
@@ -115,9 +125,14 @@ const MusicPlayer = () => {
     }
   };
 
-  if (tracks.length === 0) {
+  if (tracks.length === 0 && !isAdmin) {
+    return null;
+  }
+
+  if (tracks.length === 0 && isAdmin) {
     return (
       <>
+        {showAuth && <AdminAuth onAuthenticated={handleAuthSuccess} />}
         <MusicAdmin tracks={tracks} onTracksUpdate={handleTracksUpdate} />
         <div className="fixed bottom-6 right-6 z-50">
           <Card className="p-4 backdrop-blur-md bg-card/95 border-primary/40">
@@ -132,7 +147,8 @@ const MusicPlayer = () => {
 
   return (
     <>
-      <MusicAdmin tracks={tracks} onTracksUpdate={handleTracksUpdate} />
+      {showAuth && <AdminAuth onAuthenticated={handleAuthSuccess} />}
+      {isAdmin && <MusicAdmin tracks={tracks} onTracksUpdate={handleTracksUpdate} />}
       <div className="fixed bottom-6 right-6 z-50">
         <Card 
         className={`backdrop-blur-md bg-card/95 border-primary/40 shadow-2xl transition-all duration-300 ${

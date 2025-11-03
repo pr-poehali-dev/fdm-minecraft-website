@@ -149,6 +149,10 @@ const About = () => {
     { id: 'gallery' as TabType, label: 'Галерея', icon: 'Image' as const, color: 'text-purple-400' }
   ];
 
+  const handleVideoFactsClick = () => {
+    navigate("/video-facts");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
@@ -161,14 +165,24 @@ const About = () => {
           >
             Freedom
           </h1>
-          <Button 
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="text-foreground hover:text-primary transition-colors"
-          >
-            <Icon name="Home" size={18} className="mr-2" />
-            На главную
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="ghost"
+              onClick={handleVideoFactsClick}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <Icon name="Video" size={18} className="mr-2" />
+              ВидеоФакты
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => navigate("/")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <Icon name="Home" size={18} className="mr-2" />
+              На главную
+            </Button>
+          </div>
         </div>
       </nav>
 

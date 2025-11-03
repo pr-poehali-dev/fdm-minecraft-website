@@ -12,6 +12,7 @@ import GalleryAdmin from "./pages/GalleryAdmin";
 import VideoFacts from "./pages/VideoFacts";
 import NotFound from "./pages/NotFound";
 import MusicPlayer from "./components/MusicPlayer";
+import AdminButton from "./components/AdminButton";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => {
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AdminButton />
       <MusicPlayer />
       <BrowserRouter>
         <Routes>
