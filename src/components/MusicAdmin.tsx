@@ -18,7 +18,6 @@ interface MusicAdminProps {
 }
 
 const MusicAdmin = ({ tracks, onTracksUpdate }: MusicAdminProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [editingTrack, setEditingTrack] = useState<Track | null>(null);
   const [newTitle, setNewTitle] = useState("");
   const [newArtist, setNewArtist] = useState("");
@@ -74,35 +73,8 @@ const MusicAdmin = ({ tracks, onTracksUpdate }: MusicAdminProps) => {
     setNewArtist("");
   };
 
-  if (!isOpen) {
-    return (
-      <Button
-        onClick={() => setIsOpen(true)}
-        variant="outline"
-        size="sm"
-        className="fixed top-4 right-4 z-50"
-      >
-        <Icon name="Settings" size={16} className="mr-2" />
-        Управление музыкой
-      </Button>
-    );
-  }
-
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Управление музыкой</h2>
-          <Button
-            onClick={() => setIsOpen(false)}
-            variant="ghost"
-            size="icon"
-          >
-            <Icon name="X" size={20} />
-          </Button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+    <div className="space-y-6">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Добавить новый трек</h3>
             
@@ -219,8 +191,6 @@ const MusicAdmin = ({ tracks, onTracksUpdate }: MusicAdminProps) => {
               </div>
             )}
           </div>
-        </div>
-      </Card>
     </div>
   );
 };
