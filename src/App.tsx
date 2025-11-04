@@ -10,8 +10,8 @@ import Forum from "./pages/Forum";
 import ForumAdmin from "./pages/ForumAdmin";
 import GalleryAdmin from "./pages/GalleryAdmin";
 import VideoFacts from "./pages/VideoFacts";
+import Rules from "./pages/Rules";
 import NotFound from "./pages/NotFound";
-import MusicPlayer from "./components/MusicPlayer";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,6 @@ const App = () => {
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <MusicPlayer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -30,6 +29,7 @@ const App = () => {
           <Route path="/forum" element={<Forum />} />
           <Route path="/forum-admin" element={<ForumAdmin />} />
           <Route path="/video-facts" element={<VideoFacts />} />
+          <Route path="/rules" element={<Rules />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

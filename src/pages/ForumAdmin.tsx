@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import MusicAdmin from "@/components/MusicAdmin";
 
 const VIDEO_API_URL = "https://functions.poehali.dev/5cb318ce-7d10-4b48-ae74-369eb19c2392";
 const FORUM_API_URL = "https://functions.poehali.dev/1fd0019a-4f24-45a7-8653-c476463bb23b";
@@ -36,12 +35,7 @@ interface Video {
   created_at: string;
 }
 
-interface Track {
-  id: string;
-  title: string;
-  artist: string;
-  url: string;
-}
+
 
 const ForumAdmin = () => {
   const navigate = useNavigate();
@@ -52,10 +46,6 @@ const ForumAdmin = () => {
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem('admin_token')
   );
-  const [musicTracks, setMusicTracks] = useState<Track[]>(() => {
-    const saved = localStorage.getItem('musicTracks');
-    return saved ? JSON.parse(saved) : [];
-  });
   
   const [messages, setMessages] = useState<ForumMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,10 +69,7 @@ const ForumAdmin = () => {
     }
   }, [authToken]);
 
-  const handleMusicTracksUpdate = (newTracks: Track[]) => {
-    setMusicTracks(newTracks);
-    localStorage.setItem('musicTracks', JSON.stringify(newTracks));
-  };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -452,7 +439,7 @@ const ForumAdmin = () => {
             </div>
 
             <Tabs defaultValue="forum" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="forum" className="flex items-center gap-2">
                   <Icon name="MessageSquare" size={18} />
                   Форум ({messages.filter(m => !m.is_read).length})
@@ -460,10 +447,6 @@ const ForumAdmin = () => {
                 <TabsTrigger value="videos" className="flex items-center gap-2">
                   <Icon name="Video" size={18} />
                   ВидеоФакты ({videos.length})
-                </TabsTrigger>
-                <TabsTrigger value="music" className="flex items-center gap-2">
-                  <Icon name="Music" size={18} />
-                  Музыка ({musicTracks.length})
                 </TabsTrigger>
               </TabsList>
 
@@ -677,18 +660,6 @@ const ForumAdmin = () => {
                     </div>
                   </TabsContent>
                 </Tabs>
-              </TabsContent>
-
-              <TabsContent value="music" className="space-y-6 mt-6">
-                <Card className="p-6">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-2">Управление музыкой</h3>
-                    <p className="text-muted-foreground">
-                      Добавляйте, редактируйте и удаляйте треки для музыкального плеера
-                    </p>
-                  </div>
-                  <MusicAdmin tracks={musicTracks} onTracksUpdate={handleMusicTracksUpdate} />
-                </Card>
               </TabsContent>
             </Tabs>
           </div>
