@@ -510,6 +510,17 @@ const Index = () => {
 
         <section className="space-y-6">
           <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Правила сервера</h2>
+          <div className="text-center mb-8">
+            <Button
+              onClick={() => navigate("/rules")}
+              size="lg"
+              className="bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] hover:bg-[position:100%_0] transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
+            >
+              <Icon name="BookOpen" size={20} className="mr-2" />
+              Посмотреть все правила
+              <Icon name="ArrowRight" size={20} className="ml-2" />
+            </Button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {serverRules.map((rule, index) => (
               <Card
