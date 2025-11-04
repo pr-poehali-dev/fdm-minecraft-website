@@ -12,11 +12,14 @@ interface Track {
 }
 
 const DEFAULT_TRACKS: Track[] = [
-  { id: "1", title: "Key", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-  { id: "2", title: "Subwoofer Lullaby", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-  { id: "3", title: "Living Mice", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-  { id: "4", title: "Haggstrom", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-  { id: "5", title: "Minecraft", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+  { id: "1", title: "Sweden", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { id: "2", title: "Wet Hands", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+  { id: "3", title: "Calm1", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+  { id: "4", title: "Calm2", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+  { id: "5", title: "Calm3", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+  { id: "6", title: "Clark", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+  { id: "7", title: "Moog City", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+  { id: "8", title: "Dry Hands", artist: "C418", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
 ];
 
 const MusicPlayer = () => {
