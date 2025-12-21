@@ -212,416 +212,563 @@ const Index = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCAyMCAwIEwgMjAgMjAgTCAwIDIwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
       
       <nav className="relative z-20 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Freedom
-            </h1>
-            
-            <button 
-              className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-2 sm:py-3 md:py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center shadow-lg">
+                <Icon name="Pickaxe" className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                  Freeman's Anarchy
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">Анархия сервер</p>
+              </div>
+            </div>
+
+            <div className="hidden md:flex items-center gap-2 lg:gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const section = document.getElementById('features');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs sm:text-sm lg:text-base"
+              >
+                Особенности
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const section = document.getElementById('rules');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs sm:text-sm lg:text-base"
+              >
+                Правила
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const section = document.getElementById('clans');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs sm:text-sm lg:text-base"
+              >
+                Кланы
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  const section = document.getElementById('social');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs sm:text-sm lg:text-base"
+              >
+                Соц. сети
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="w-8 h-8 lg:w-9 lg:h-9"
+              >
+                <Icon 
+                  name={isDarkMode ? "Sun" : "Moon"} 
+                  className="w-4 h-4 lg:w-5 lg:h-5" 
+                />
+              </Button>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden w-8 h-8 sm:w-9 sm:h-9"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} className="text-foreground" />
-            </button>
-            
-            <div className="hidden md:flex gap-2 lg:gap-4">
-              <Button 
-                variant="ghost"
-                onClick={() => navigate("/about")}
-                className="text-foreground hover:text-primary transition-colors minecraft-button text-sm lg:text-base"
-              >
-                <Icon name="BookOpen" size={16} className="mr-1 lg:mr-2" />
-                О сервере
-              </Button>
-              <Button 
-                variant="ghost"
-                onClick={() => navigate("/forum")}
-                className="text-foreground hover:text-primary transition-colors minecraft-button text-sm lg:text-base"
-              >
-                <Icon name="MessageSquare" size={16} className="mr-1 lg:mr-2" />
-                Форум
-              </Button>
-              <Button 
-                variant="ghost"
-                onClick={() => navigate("/forum-admin")}
-                className="text-orange-400 hover:text-orange-300 transition-colors minecraft-button text-sm lg:text-base"
-              >
-                <Icon name="Shield" size={16} className="mr-1 lg:mr-2" />
-                Админка
-              </Button>
-              <a 
-                href="https://fdm.trademc.org/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button text-sm lg:text-base">
-                  <Icon name="ShoppingCart" size={16} className="mr-1 lg:mr-2" />
-                  🛍️ Магазин
-                </Button>
-              </a>
-            </div>
+              <Icon name={mobileMenuOpen ? "X" : "Menu"} className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Button>
           </div>
-          
+
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 space-y-2 pb-2 animate-fade-in">
-              <Button 
+            <div className="md:hidden mt-3 sm:mt-4 pb-3 sm:pb-4 space-y-2">
+              <Button
                 variant="ghost"
-                onClick={() => { navigate("/about"); setMobileMenuOpen(false); }}
-                className="w-full justify-start text-foreground hover:text-primary transition-colors minecraft-button"
+                className="w-full justify-start text-sm sm:text-base"
+                onClick={() => {
+                  const section = document.getElementById('features');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                }}
               >
-                <Icon name="BookOpen" size={18} className="mr-2" />
-                О сервере
+                Особенности
               </Button>
-              <Button 
+              <Button
                 variant="ghost"
-                onClick={() => { navigate("/forum"); setMobileMenuOpen(false); }}
-                className="w-full justify-start text-foreground hover:text-primary transition-colors minecraft-button"
+                className="w-full justify-start text-sm sm:text-base"
+                onClick={() => {
+                  const section = document.getElementById('rules');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                }}
               >
-                <Icon name="MessageSquare" size={18} className="mr-2" />
-                Форум
+                Правила
               </Button>
-              <Button 
+              <Button
                 variant="ghost"
-                onClick={() => { navigate("/forum-admin"); setMobileMenuOpen(false); }}
-                className="w-full justify-start text-orange-400 hover:text-orange-300 transition-colors minecraft-button"
+                className="w-full justify-start text-sm sm:text-base"
+                onClick={() => {
+                  const section = document.getElementById('clans');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                }}
               >
-                <Icon name="Shield" size={18} className="mr-2" />
-                Админка
+                Кланы
               </Button>
-              <a 
-                href="https://fdm.trademc.org/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block"
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-sm sm:text-base"
+                onClick={() => {
+                  const section = document.getElementById('social');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                }}
               >
-                <Button className="w-full justify-start bg-primary hover:bg-primary/90 text-primary-foreground minecraft-button">
-                  <Icon name="ShoppingCart" size={18} className="mr-2" />
-                  🛍️ Магазин
-                </Button>
-              </a>
+                Соц. сети
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-sm sm:text-base"
+                onClick={() => {
+                  toggleTheme();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <Icon 
+                  name={isDarkMode ? "Sun" : "Moon"} 
+                  className="w-4 h-4 sm:w-5 sm:h-5 mr-2" 
+                />
+                {isDarkMode ? "Светлая тема" : "Тёмная тема"}
+              </Button>
             </div>
           )}
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-6 md:py-12 space-y-8 md:space-y-16 relative z-10">
-        <header className="text-center space-y-8 animate-fade-in">
-          <div className="flex justify-center mb-6">
-            <img 
-              src="https://cdn.poehali.dev/files/ed2a512b-705a-419a-8380-9f3dfc415729.jpg" 
-              alt="Ванильная эпоха - Freedom Server" 
-              className="w-full max-w-3xl rounded-lg shadow-2xl border-4 border-primary/40 minecraft-card"
-              style={{animation: "float 3s ease-in-out infinite"}}
-            />
-          </div>
-          
-          <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow minecraft-text">
-              ⛏️ Freedom ⚔️
+      <main className="relative z-10">
+        <section className="container mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-20">
+          <div className="text-center space-y-4 sm:space-y-6 lg:space-y-8 mb-8 sm:mb-12 lg:mb-16">
+            <div className="inline-block">
+              <div className="flex items-center gap-2 sm:gap-3 bg-primary/10 rounded-full px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 border border-primary/20">
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-xs sm:text-sm lg:text-base font-medium">Сервер онлайн</span>
+              </div>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
+              <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+                Freeman's Anarchy
+              </span>
             </h1>
-            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
-              Гриферский сервер • Версия 1.20.1
+
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-3 sm:px-4">
+              Истинная анархия без привилегий. Выживай, сражайся, строй империю в мире полной свободы
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 lg:gap-6 pt-2 sm:pt-4">
+              <Button 
+                size="lg" 
+                onClick={copyIP}
+                className="group relative overflow-hidden bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 h-auto w-full sm:w-auto"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                <Icon name="Copy" className="mr-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                Скопировать IP
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={() => navigate('/wiki')}
+                className="border-primary/20 hover:bg-primary/10 text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 h-auto w-full sm:w-auto"
+              >
+                <Icon name="BookOpen" className="mr-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                Открыть Wiki
+              </Button>
+            </div>
+
+            <div className="inline-block bg-muted/50 backdrop-blur-sm rounded-lg px-4 sm:px-6 lg:px-8 py-2 sm:py-3 border border-border/50">
+              <code className="text-base sm:text-lg lg:text-xl font-mono text-primary">
+                go.fdm.su
+              </code>
+            </div>
+          </div>
+
+          <Card className="bg-card/50 backdrop-blur-sm border-primary/20 shadow-2xl overflow-hidden">
+            <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 lg:space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                    <Icon name="Users" className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold">Онлайн игроков</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">В реальном времени</p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchServerStatus}
+                  disabled={isLoading}
+                  className="text-xs sm:text-sm lg:text-base px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2"
+                >
+                  <Icon 
+                    name="RefreshCw" 
+                    className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ${isLoading ? 'animate-spin' : ''}`} 
+                  />
+                </Button>
+              </div>
+
+              <div className="space-y-3 sm:space-y-4 lg:space-y-6">
+                <div className="flex items-end gap-2 sm:gap-3 lg:gap-4">
+                  <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
+                    {onlinePlayers}
+                  </span>
+                  <span className="text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-1 sm:mb-1.5 lg:mb-2">
+                    / {maxPlayers}
+                  </span>
+                </div>
+
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex justify-between text-xs sm:text-sm lg:text-base">
+                    <span className="text-muted-foreground">Заполненность</span>
+                    <span className="font-semibold">{onlinePercentage.toFixed(1)}%</span>
+                  </div>
+                  <Progress value={onlinePercentage} className="h-2 sm:h-3 lg:h-4" />
+                </div>
+
+                {onlineHistory.length > 0 && (
+                  <div className="mt-4 sm:mt-6 lg:mt-8">
+                    <h4 className="text-xs sm:text-sm lg:text-base font-medium mb-2 sm:mb-3 lg:mb-4 text-muted-foreground">
+                      История онлайна
+                    </h4>
+                    <div className="h-48 sm:h-56 lg:h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={onlineHistory}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                          <XAxis 
+                            dataKey="time" 
+                            stroke="hsl(var(--muted-foreground))"
+                            fontSize={10}
+                            className="sm:text-xs lg:text-sm"
+                          />
+                          <YAxis 
+                            stroke="hsl(var(--muted-foreground))"
+                            fontSize={10}
+                            className="sm:text-xs lg:text-sm"
+                          />
+                          <Tooltip 
+                            contentStyle={{
+                              backgroundColor: 'hsl(var(--card))',
+                              border: '1px solid hsl(var(--border))',
+                              borderRadius: '8px',
+                              fontSize: '12px'
+                            }}
+                            className="sm:text-sm lg:text-base"
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="players" 
+                            stroke="hsl(var(--primary))" 
+                            strokeWidth={2}
+                            dot={{ fill: 'hsl(var(--primary))', r: 3 }}
+                            className="sm:stroke-[2.5px] lg:stroke-[3px]"
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        <section 
+          id="features"
+          ref={(el) => (sectionRefs.current['features'] = el)}
+          className={`container mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-20 transition-all duration-1000 ${
+            visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6">
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Особенности сервера
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-3 sm:px-4">
+              Уникальные возможности для незабываемого опыта игры
             </p>
           </div>
 
-          <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/15 via-red-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-orange-500/40 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto shadow-xl">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDQwIEwgNDAgMCBNIC0xMCA1MCBMIDUwIC0xMCBNIDI1IDUwIEwgNTAgMjUiIHN0cm9rZT0icmdiYSgyNTUsMTY1LDAsMC4wNSkiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
-            <div className="relative z-10">
-              <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-black text-center leading-snug md:leading-tight">
-                <span className="bg-gradient-to-r from-orange-400 via-red-400 to-purple-400 bg-clip-text text-transparent">
-                  Импровизируй. Адаптируйся. Преодолевай
-                </span>
-              </h2>
-            </div>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm border-2 border-primary/40 p-4 sm:p-6 md:p-8 max-w-4xl mx-auto shadow-2xl hover:shadow-primary/30 transition-all">
-            <div className="space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Народ, все чухня. Играйте на лучшем Minecraft-сервере мира (но это не точно) Freedom!
-              </h2>
-              
-              <p className="text-sm sm:text-base md:text-lg text-center text-muted-foreground">
-                Это самый амбициозный Minecraft-проект за все время (админа), который затрагивает буквально каждый аспект игры (и вашей жизни):
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-4 text-left">
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="MapPin" size={24} className="text-primary flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    Местные земли на столько изуродованы, что кажется на сервере есть новые биомы, данжи и структуры
-                  </p>
-                </div>
-
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="Smile" size={24} className="text-accent flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    Поддержка кастомных анимаций (Emotecrafts)
-                  </p>
-                </div>
-
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="Mic" size={24} className="text-blue-500 flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    Поддержка голосового чата прямо в игре (Simple Voice Chat), чтобы твой кореш смог издавать для тебя незабываемые звуки
-                  </p>
-                </div>
-
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="Zap" size={24} className="text-orange-500 flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    У местных игроков столько TNT, кристаллов и якорей, что твоя RTX будет создавать динамическое освещение огня прямо в реальности
-                  </p>
-                </div>
-
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="Sparkles" size={24} className="text-yellow-500 flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    Всякие прикалюхи, типа пишешь сообщение, а вокруг тебя такие огоньки: ВЖУХ
-                  </p>
-                </div>
-
-                <div className="flex gap-3 items-start p-4 bg-card/50 rounded-lg border border-primary/20 hover:border-primary/40 transition-all">
-                  <Icon name="Bug" size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    Новые монстры, баги и боссы
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-4 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-lg border-2 border-red-500/30">
-                <div className="flex gap-3 items-start">
-                  <Icon name="AlertTriangle" size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-sm text-foreground">
-                    <span className="font-bold text-red-500">Нелегальные предметы</span>, инструменты, ресурсы, шмотки и многое-многое другое за что вас сможет забанить администрация!
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xl md:text-2xl font-bold text-center bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                Короче, ваша жизнь никогда не будет прежней)
-              </p>
-            </div>
-          </Card>
-
-          <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 max-w-2xl mx-auto shadow-lg hover:shadow-primary/20 transition-all">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="text-center md:text-left space-y-2">
-                <p className="text-xs text-muted-foreground">IP для подключения</p>
-                <p className="text-3xl md:text-4xl font-bold text-primary">go.fdm.su</p>
-                <p className="text-xs text-muted-foreground">Поддержка 1.7 - 1.21.7</p>
-              </div>
-              <Button
-                onClick={copyIP}
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/50 transition-all minecraft-button"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {features.map((feature, index) => (
+              <Card
+                key={index}
+                className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
               >
-                <Icon name="Copy" size={20} className="mr-2" />
-                Копировать
-              </Button>
-            </div>
-          </Card>
-        </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 transition-all shadow-lg">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-primary/20 rounded-lg">
-                <Icon name="Users" size={32} className="text-primary" />
-              </div>
-            </div>
-            <h3 className="text-sm mb-4 text-center text-foreground font-semibold">
-              Онлайн
-            </h3>
-            <div className="text-center space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Игроков на go.fdm.su: <b className="text-primary text-2xl"><span data-playercounter-ip="go.fdm.su">0</span></b>
-              </p>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-2 text-xs text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2 mx-auto"
-              >
-                <Icon name="RefreshCw" size={14} />
-                Обновить
-              </button>
-            </div>
-          </Card>
-
-          <Card className="bg-card/80 backdrop-blur-sm border-2 border-accent/30 p-6 hover:scale-105 transition-all shadow-lg">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-accent/20 rounded-lg">
-                <Icon name="Sparkles" size={32} className="text-accent" />
-              </div>
-            </div>
-            <h3 className="text-sm mb-4 text-center text-foreground font-semibold">
-              Особенности
-            </h3>
-            <div className="space-y-3">
-              {features.map((feature) => (
-                <div key={feature.title} className="flex items-center gap-3 text-xs">
-                  <Icon name={feature.icon as any} size={16} className="text-accent flex-shrink-0" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative p-4 sm:p-6 lg:p-8 space-y-3 sm:space-y-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Icon name={feature.icon as any} className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-primary-foreground" />
+                  </div>
                   <div>
-                    <p className="font-semibold text-foreground">{feature.title}</p>
-                    <p className="text-muted-foreground text-[0.65rem]">{feature.desc}</p>
+                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1.5 sm:mb-2">{feature.title}</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">{feature.desc}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </Card>
-
-          <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 hover:scale-105 transition-all shadow-lg">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-destructive/20 rounded-lg">
-                <Icon name="AlertTriangle" size={32} className="text-destructive" />
-              </div>
-            </div>
-            <h3 className="text-sm mb-4 text-center text-foreground font-semibold">
-              Важно
-            </h3>
-            <div className="space-y-3 text-xs">
-              <div className="p-2 bg-destructive/10 rounded border border-destructive/30">
-                <p className="text-destructive font-semibold">⚠️ Forge не поддерживается</p>
-                <p className="text-muted-foreground text-[0.65rem] mt-1">Версии 1.20.5 - 1.21.2</p>
-              </div>
-              <div className="p-2 bg-primary/10 rounded border border-primary/30">
-                <p className="text-primary font-semibold">🛡️ Система модерации</p>
-                <p className="text-muted-foreground text-[0.65rem] mt-1">Муты, баны, анти-спам система</p>
-              </div>
-              <p className="text-muted-foreground text-[0.65rem] leading-relaxed">
-                Лучший гриферский сервер! Кастомные предметы, голосовой чат, полная свобода действий.
-              </p>
-            </div>
-          </Card>
-        </div>
-
-        <section className="space-y-6">
-          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">График онлайна</h2>
-          <Card className="bg-card/80 backdrop-blur-sm border-2 border-primary/30 p-6 shadow-lg">
-            <iframe 
-              src="https://minecraftrating.ru/server_chart/282092/" 
-              width="100%" 
-              height="300" 
-              frameBorder="0"
-              title="График онлайна сервера"
-            />
-          </Card>
+              </Card>
+            ))}
+          </div>
         </section>
 
-        <section className="space-y-6">
-          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Правила сервера</h2>
-          <div className="text-center mb-8">
-            <Button
-              onClick={() => navigate("/rules")}
-              size="lg"
-              className="bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] hover:bg-[position:100%_0] transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
-            >
-              <Icon name="BookOpen" size={20} className="mr-2" />
-              Посмотреть все правила
-              <Icon name="ArrowRight" size={20} className="ml-2" />
-            </Button>
+        <section 
+          id="rules"
+          ref={(el) => (sectionRefs.current['rules'] = el)}
+          className={`container mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-20 transition-all duration-1000 ${
+            visibleSections.has('rules') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6">
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Правила сервера
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-3 sm:px-4">
+              Простые правила для комфортной игры всех участников
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
             {serverRules.map((rule, index) => (
               <Card
                 key={index}
-                className="bg-card/60 backdrop-blur-sm border-2 border-border/50 p-6 hover:border-primary/50 transition-all"
+                className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
               >
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="p-3 bg-primary/20 rounded-lg">
-                    <Icon name={rule.icon as any} size={28} className="text-primary" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative p-4 sm:p-6 lg:p-8 text-center space-y-3 sm:space-y-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+                    <Icon name={rule.icon as any} className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-sm font-semibold text-foreground">{rule.title}</h3>
-                  <p className="text-xs text-muted-foreground">{rule.description}</p>
+                  <div>
+                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1.5 sm:mb-2">{rule.title}</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">{rule.description}</p>
+                  </div>
                 </div>
               </Card>
             ))}
           </div>
         </section>
 
-        <section className="space-y-6">
-          <div className="text-center space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary">Кланы сервера</h2>
-            <Button 
-              onClick={() => navigate("/about")}
-              size="lg"
-              className="bg-gradient-to-r from-primary to-accent hover:scale-105 transition-all shadow-lg"
-            >
-              <Icon name="Shield" size={20} className="mr-2" />
-              Посмотреть все кланы
-            </Button>
+        <section 
+          id="clans"
+          ref={(el) => (sectionRefs.current['clans'] = el)}
+          className={`container mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-20 transition-all duration-1000 ${
+            visibleSections.has('clans') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6">
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Легендарные кланы
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-3 sm:px-4">
+              История великих объединений игроков сервера
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clans.slice(0, 3).map((clan, index) => (
-              <Card 
-                key={index} 
-                className={`bg-gradient-to-br ${clan.color} border-0 p-6 cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg`}
-                onClick={() => navigate("/clans")}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {clans.map((clan, index) => (
+              <Card
+                key={index}
+                className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
               >
-                <div className="flex flex-col items-center text-center space-y-3 text-white">
-                  <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
-                    {clan.name === "Orthodox" ? (
-                      <div className="text-4xl">✝️</div>
-                    ) : (
-                      <Icon name={clan.icon as any} size={32} />
-                    )}
+                <div className={`absolute inset-0 bg-gradient-to-br ${clan.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                <div className="relative p-4 sm:p-6 lg:p-8 space-y-3 sm:space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br ${clan.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon name={clan.icon as any} className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    </div>
+                    <div className="bg-primary/10 rounded-full px-2 sm:px-3 py-0.5 sm:py-1">
+                      <span className="text-xs sm:text-sm font-semibold">LVL {clan.level}</span>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold">{clan.name}</h3>
+                  <div>
+                    <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-2 sm:mb-3">{clan.name}</h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-muted-foreground leading-relaxed">
+                      {clan.description}
+                    </p>
+                  </div>
                 </div>
               </Card>
             ))}
           </div>
         </section>
 
-        <section className="space-y-6">
-          <h2 className="text-2xl md:text-3xl text-center font-bold text-primary">Присоединяйся</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {socialLinks.map((link) => (
+        <section 
+          id="social"
+          ref={(el) => (sectionRefs.current['social'] = el)}
+          className={`container mx-auto px-3 sm:px-4 lg:px-6 py-8 sm:py-12 lg:py-20 transition-all duration-1000 ${
+            visibleSections.has('social') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6">
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Присоединяйся к нам
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-3 sm:px-4">
+              Будь частью нашего сообщества в социальных сетях
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
+            {socialLinks.map((social, index) => (
               <a
-                key={link.name}
-                href={link.url}
+                key={index}
+                href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block"
+                className="group"
               >
-                <Card className={`${link.color} border-0 p-6 hover:scale-105 transition-all shadow-lg cursor-pointer`}>
-                  <div className="flex flex-col items-center text-center space-y-3 text-white">
-                    <Icon name={link.icon as any} size={32} />
-                    <h3 className="text-base font-bold">{link.name}</h3>
+                <Card className="relative overflow-hidden bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative p-4 sm:p-6 lg:p-8 text-center space-y-3 sm:space-y-4">
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 ${social.color} rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <Icon name={social.icon as any} className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
+                    </div>
+                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold">{social.name}</h3>
                   </div>
                 </Card>
               </a>
             ))}
           </div>
         </section>
+      </main>
 
-        <footer className="text-center pt-8 pb-4">
-          <p className="text-xs text-muted-foreground">
-            © 2025 FDM.SU • Лучший гриферский сервер Minecraft
-          </p>
-        </footer>
-      </div>
+      <footer className="relative z-10 border-t border-primary/20 bg-background/80 backdrop-blur-sm mt-12 sm:mt-16 lg:mt-20">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-8 lg:py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+            <div>
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
+                  <Icon name="Pickaxe" className="w-4 h-4 sm:w-5 sm:h-5 text-primary-foreground" />
+                </div>
+                <span className="text-base sm:text-lg lg:text-xl font-bold">Freeman's Anarchy</span>
+              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">
+                Истинная анархия без привилегий. Выживай, сражайся, строй империю.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-3 sm:mb-4">Навигация</h3>
+              <div className="space-y-2">
+                <button
+                  onClick={() => {
+                    const section = document.getElementById('features');
+                    section?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="block text-xs sm:text-sm lg:text-base text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Особенности
+                </button>
+                <button
+                  onClick={() => {
+                    const section = document.getElementById('rules');
+                    section?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="block text-xs sm:text-sm lg:text-base text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Правила
+                </button>
+                <button
+                  onClick={() => {
+                    const section = document.getElementById('clans');
+                    section?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="block text-xs sm:text-sm lg:text-base text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Кланы
+                </button>
+                <button
+                  onClick={() => navigate('/wiki')}
+                  className="block text-xs sm:text-sm lg:text-base text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Wiki
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-3 sm:mb-4">Подключение</h3>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="bg-muted/50 rounded-lg p-2 sm:p-3">
+                  <code className="text-xs sm:text-sm lg:text-base font-mono text-primary">go.fdm.su</code>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={copyIP}
+                  className="w-full text-xs sm:text-sm lg:text-base py-1.5 sm:py-2"
+                >
+                  <Icon name="Copy" className="mr-2 w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  Скопировать IP
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 sm:mt-8 lg:mt-12 pt-6 sm:pt-8 border-t border-primary/20">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+              <p className="text-xs sm:text-sm lg:text-base text-muted-foreground text-center sm:text-left">
+                2024 Freeman's Anarchy. Все права защищены.
+              </p>
+              <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
+                {socialLinks.map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Icon name={social.icon as any} className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       {showScrollTop && (
         <Button
           onClick={scrollToTop}
+          className="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 z-50 rounded-full w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
           size="icon"
-          className="fixed bottom-6 right-6 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-50 transition-all hover:scale-110"
-          aria-label="Наверх"
         >
-          <Icon name="ArrowUp" size={24} />
+          <Icon name="ArrowUp" className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
         </Button>
       )}
-
-      <Button
-        onClick={toggleTheme}
-        size="icon"
-        variant="outline"
-        className="fixed bottom-6 left-6 rounded-full shadow-lg z-50 transition-all hover:scale-110 bg-background/80 backdrop-blur-sm"
-        aria-label="Переключить тему"
-      >
-        <Icon name={isDarkMode ? "Sun" : "Moon"} size={20} />
-      </Button>
     </div>
   );
 };
