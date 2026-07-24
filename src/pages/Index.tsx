@@ -594,9 +594,7 @@ const Index = () => {
         </section>
 
         <footer className="text-center pt-8 pb-4">
-          <p className="text-xs text-muted-foreground">
-            © 2025 FDM.SU • Лучший гриферский сервер Minecraft
-          </p>
+          <p className="text-xs text-muted-foreground">© 2026 FDM.SU • Лучший гриферский сервер Minecraft</p>
         </footer>
       </div>
 
