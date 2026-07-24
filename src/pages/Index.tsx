@@ -320,9 +320,7 @@ const Index = () => {
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-glow minecraft-text">
               ⛏️ Freedom ⚔️
             </h1>
-            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
-              Гриферский сервер • Версия 1.20.1
-            </p>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Гриферский сервер • Версия 1.21.5</p>
           </div>
 
           <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/15 via-red-500/15 to-purple-500/15 backdrop-blur-sm border-2 border-orange-500/40 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto shadow-xl">
