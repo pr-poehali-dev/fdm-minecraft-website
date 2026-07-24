@@ -408,7 +408,7 @@ const Index = () => {
               <div className="text-center md:text-left space-y-2">
                 <p className="text-xs text-muted-foreground">IP для подключения</p>
                 <p className="text-3xl md:text-4xl font-bold text-primary">go.fdm.su</p>
-                <p className="text-xs text-muted-foreground">Поддержка 1.7 - 1.21.7</p>
+                <p className="text-xs text-muted-foreground">Поддержка 1.7 - 1.21.11</p>
               </div>
               <Button
                 onClick={copyIP}
